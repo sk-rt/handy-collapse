@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Handy Collapse</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
+	<style>
+		.container {
+			max-width: 800px;
+		}
+		.box {
+			background: #f2f2f2;
+			box-shadow: none;
+		}
+	</style>
+	<script src="sample.js"></script>
+
+</head>
+
+<body>
+	<div class="container">
+		<!-- 
+			Basic
+		 -->
+		<section class="section">
+			<h1 class="title is-1">Basic Accordion</h1>
+			<button type="button" class="button is-primary is-fullwidth is-medium" data-basic-control="content01">
+				Content 01
+			</button>
+
+			<div class="is-active" data-basic-content="content01">
+				<div class="box">
+					<p>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br>						Ut
+						enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute<br>						irure
+						dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat<br>						cupidatat
+						non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					</p>
+				</div>
+			</div>
+			<button type="button" class="button is-primary is-fullwidth is-medium" data-basic-control="content02">
+				Content 02
+			</button>
+
+			<div data-basic-content="content02">
+				<div class="box">
+					<p>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br>						Ut
+						enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute<br>						irure
+						dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat<br>						cupidatat
+						non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					</p>
+				</div>
+			</div>
+			<button type="button" class="button is-primary is-fullwidth is-medium" data-basic-control="content03">
+				Content 03
+			</button>
+			<div data-basic-content="content03">
+				<div class="box">
+					<p>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+						Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+						irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+						cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 
+			Nested
+		 -->
+		<section class="section">
+			<h1 class="title is-1">Nested Accordion</h1>
+			<button type="button" class="button is-primary is-fullwidth is-medium" data-nested-control="content01">
+				Content 01
+			</button>
+
+
+			<div data-nested-content="content01">
+				<div class="box">
+					<p>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br>						Utenim
+						ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis auteirure<br>						dolor
+						in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecatcupidatat<br>						non
+						proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br><br>
+					</p>
+					<button type="button" class="button is-info is-fullwidth is-medium" data-nested-control="child01">
+						Child Content 01
+					</button>
+					<div data-nested-content="child01">
+						<div class="box" style="background-color:#FFF">
+							<p>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br>								Utenim
+								ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis auteirure<br>								dolor
+								in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecatcupidatat<br>								non
+								proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<button type="button" class="button is-primary is-fullwidth is-medium" data-nested-control="content02">
+				Content 02
+			</button>
+	
+			<div data-nested-content="content02">
+					<div class="box">
+						<p>
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br>						Utenim
+							ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis auteirure<br>						dolor
+							in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecatcupidatat<br>						non
+							proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br><br>
+						</p>
+						<button type="button" class="button is-info is-fullwidth is-medium" data-nested-control="child02">
+							Child Content 02
+						</button>
+						<div data-nested-content="child02">
+							<div class="box" style="background-color:#FFF">
+								<p>
+									Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br>								Utenim
+									ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis auteirure<br>								dolor
+									in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecatcupidatat<br>								non
+									proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br><br>
+								</p>
+								<button type="button" class="button is-warning is-fullwidth is-medium" data-nested-control="grandChild02">
+										GrandChild Content 02
+									</button>
+									<div data-nested-content="grandChild02">
+										<div class="box" style="background-color:#FFF">
+											<p>
+												Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br>								Utenim
+												ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis auteirure<br>								dolor
+												in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecatcupidatat<br>								non
+												proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+											</p>
+										</div>
+									</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+		</section>
+
+		<!-- 
+			Callback
+		 -->
+		<section class="section">
+			<h1 class="title is-1">Callback </h1>
+			<button type="button" class="button is-primary is-fullwidth is-medium" data-callback-control="content01">
+				Closed content01
+			</button>
+			<div data-callback-content="content01">
+				<div class="box">
+					<p>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br>						Utenim
+						ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis auteirure<br>						dolor
+						in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecatcupidatat<br>						non
+						proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					</p>
+				</div>
+			</div>
+
+			<button type="button" class="button is-primary is-fullwidth is-medium" data-callback-control="content02">
+				Closed content02
+			</button>
+			<div data-callback-content="content02">
+				<div class="box">
+					<p>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br>						Utenim
+						ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis auteirure<br>						dolor
+						in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecatcupidatat<br>						non
+						proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					</p>
+				</div>
+			</div>
+
+			
+
+		</section>
+
+	</div>
+
+</body>
+
+</html>

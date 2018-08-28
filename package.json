@@ -1,0 +1,24 @@
+{
+  "name": "handy-collapse",
+  "version": "0.0.1",
+  "description": "A pure Javascript module for accordion/collapse UI without JQuery",
+  "main": "dist/handy-collapse.js",
+  "author": "R Sakai",
+  "license": "MIT",
+  "scripts": {
+    "start": "",
+    "dev": "webpack-serve",
+    "format": "prettier --write 'src/**/*.js'",
+    "dist": "babel src src/index.js --compact=true --out-file dist/handy-collapse.js"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-loader": "^7.1.5",
+    "babel-plugin-transform-object-assign": "^6.22.0",
+    "babel-preset-env": "^1.7.0",
+    "prettier": "^1.13.7",
+    "webpack": "^4.17.1",
+    "webpack-cli": "^3.1.0",
+    "webpack-serve": "^2.0.2"
+  }
+}
