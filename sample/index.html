@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,7 +15,38 @@
 			box-shadow: none;
 		}
 	</style>
-	<script src="sample.js"></script>
+	<script src="../dist/handy-collapse.js"></script>
+	<script>
+	document.addEventListener("DOMContentLoaded", () => {
+		//Basic Accordion
+		let basic = new HandyCollapse({
+			nameSpace: "basic",
+			closeOthers: true
+		});
+		//Nested 
+		let nested = new HandyCollapse({
+			nameSpace: "nested",
+			closeOthers: false
+		});
+		//Callback 
+		let callback = new HandyCollapse({
+			nameSpace: "callback",
+			closeOthers: false,
+			onSlideStart: (isOpen,contentID) =>{
+				console.log(isOpen);
+				let buttonEl = document.querySelector(`[data-callback-control='${contentID}']`);
+				if(!buttonEl) return;
+				if(isOpen){
+					buttonEl.textContent = "Opned " + contentID;
+				} else {
+					buttonEl.textContent = "Closed " + contentID;
+				}
+			},
+		});
+		
+
+	},false)
+	</script>
 
 </head>
 

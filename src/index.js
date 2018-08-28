@@ -2,7 +2,6 @@
 
 
 handyCollapse
--
 
 
 ************************************/
@@ -186,4 +185,6 @@ class HandyCollapse {
 		return clientHeight;
 	}
 }
-export default HandyCollapse;
+if (typeof module === "object") {
+	module.exports = HandyCollapse;
+}
