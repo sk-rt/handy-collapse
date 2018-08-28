@@ -1,6 +1,6 @@
 # handy-collaps.js
 
-A pure Javascript module for accordion/collapse UI without dependency.
+A pure Javascript module for accordion/collapse UI without JQuery.
 
 ## Usage
 
@@ -17,7 +17,10 @@ $ npm install handy-collapse --save
 ```es6
 import HandyCollapse from "handy-collapse";
 ```
-
+or html
+```html
+<script src="path/to/handy-collapse.js"></script>
+```
 ### initialize
 
 ```es6
@@ -38,9 +41,23 @@ new HandyCollapse(options);
 | cssEasing         | String   | "ease-in-out"     | css transition easing (only isAimation:true)                                                                   |
 | onSlideStart      | Function | null              | Callback on Open/Close Start <br> @param {Boolean} isOpen <br> @param {String} contentID \* Don't ID Attribute |
 | onSlideEnd        | Function | null              | Callback on Open/Close End <br>                                                                                |
+
+
+## Methods
+
+Open/Close Content
+```es6
+open(contentID,[isRunCallback,isAimation])
+```
+```es6
+close(contentID,[isRunCallback,isAimation])
+```
+
 ## Sample
+[More example is here](https://github.com/sk-rt/handy-collapse/tree/master/sample)
 ### JS
 ```es6
+//Full Options
 let myAccrodion = new HandyCollapse({
     nameSpace: "hc",
     activeClass: "is-active",
@@ -49,9 +66,18 @@ let myAccrodion = new HandyCollapse({
     cssEasing: "ease",
     onSlideStart: (isOpen, contentID) => {
         console.log(isOpen);
-        let content = document.querySelector();
+        let buttonEl = document.querySelector(`[data-callback-control='${contentID}']`);
+        console.log(buttonEl);
+    },
+     onSlideStart: (isOpen, contentID) => {
+        console.log(isOpen);
+        let buttonEl = document.querySelector(`[data-callback-control='${contentID}']`);
+        console.log(buttonEl);
     }
 });
+// Open by Js
+myAccrodion.open("content01")
+
 ```
 ### HTML
 ```html
