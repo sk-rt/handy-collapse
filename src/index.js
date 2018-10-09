@@ -118,21 +118,29 @@ class HandyCollapse {
 		if (isRunCallback !== false) this.onSlideStart(true, id);
 
 		let toggleBody = document.querySelector(`[${this.toggleContentAttr}='${id}']`);
-		let toggleButton = document.querySelector(`[${this.toggleButtonAttr}='${id}']`);
 		let clientHeight = this.getTargetHeight(toggleBody);
 		toggleBody.classList.add(this.activeClass);
-		toggleButton.classList.add(this.activeClass);
+
+		let toggleButton = document.querySelectorAll(`[${this.toggleButtonAttr}='${id}']`);
+		if (toggleButton.length > 0 ) {
+			Array.prototype.slice.call(toggleButton).forEach((button, index) => {
+				button.classList.add(this.activeClass)
+			});
+		}
 
 		if (isAimation) {
+			toggleBody.style.overflow = "hidden";
 			toggleBody.style.transition = `${this.animatinSpeed}ms ${this.cssEasing}`;
 			toggleBody.style.maxHeight = (clientHeight || "1000") + "px";
 			setTimeout(() => {
 				if (isRunCallback !== false) this.onSlideEnd(true, id);
 				toggleBody.style.maxHeight = "none";
 				toggleBody.style.transition = "";
+				toggleBody.style.overflow = "";
 			}, this.animatinSpeed);
 		} else {
 			toggleBody.style.maxHeight = "none";
+			toggleBody.style.overflow = "";
 		}
 		if (this.itemsStatus.hasOwnProperty(id)) {
 			this.itemsStatus[id].isOpen = true;
@@ -147,13 +155,18 @@ class HandyCollapse {
 
 		if (isRunCallback !== false) this.onSlideStart(false, id);
 		let toggleBody = document.querySelector(`[${this.toggleContentAttr}='${id}']`);
-		let toggleButton = document.querySelector(`[${this.toggleButtonAttr}='${id}']`);
+		toggleBody.style.overflow = "hidden";
 		toggleBody.classList.remove(this.activeClass);
-		toggleButton.classList.remove(this.activeClass);
 		toggleBody.style.maxHeight = toggleBody.clientHeight + "px";
 		setTimeout(() => {
 			toggleBody.style.maxHeight = "0px";
-		}, 5);
+		}, 1);
+		let toggleButton = document.querySelectorAll(`[${this.toggleButtonAttr}='${id}']`);
+		if (toggleButton.length > 0 ) {
+			Array.prototype.slice.call(toggleButton).forEach((button, index) => {
+				button.classList.remove(this.activeClass)
+			});
+		}
 
 		if (isAimation) {
 			toggleBody.style.transition = `${this.animatinSpeed}ms ${this.cssEasing}`;
