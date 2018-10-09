@@ -1,12 +1,14 @@
 # handy-collaps.js
 
-A pure Javascript module for accordion/collapse UI without JQuery.
+A pure Javascript module for accordion/collapse UI without JQuery.  
+
 
 ## Usage
 
 ### Install
 
-Using npm, install handy-collaps
+Using npm, install handy-collaps  
+[> npm](https://www.npmjs.com/package/handy-collapse)
 
 ```bash
 $ npm install handy-collapse --save
@@ -21,12 +23,27 @@ or html
 ```html
 <script src="path/to/handy-collapse.js"></script>
 ```
-### initialize
+### Initialize
 
 ```es6
 new HandyCollapse(options);
 ```
+### Markup
 
+```html
+<!-- 
+    Add data attribute, button/content element.
+    Control Button:  data-{namespase}-control="{ID}" * multiple elements
+    Toggle Content:  data-{namespase}-content="{ID}" * only one element
+ -->
+<button type="button" data-hc-control="uniqID">
+    Show/Hide Content
+</button>
+
+<div data-hc-content="uniqID">
+    Toggle Content
+</div>
+```
 ## Options
 
 | Option Name       | Type     | Default           | Desc                                                                                                           |
@@ -39,69 +56,96 @@ new HandyCollapse(options);
 | closeOthers       | Boolean  | true              | Close others Content                                                                                           |
 | animatinSpeed     | Number   | 400               | css transition duration(ms)                                                                                    |
 | cssEasing         | String   | "ease-in-out"     | css transition easing (only isAimation:true)                                                                   |
-| onSlideStart      | Function | null              | Callback on Open/Close Start <br> @param {Boolean} isOpen <br> @param {String} contentID \* Don't ID Attribute |
-| onSlideEnd        | Function | null              | Callback on Open/Close End <br>                                                                                |
+| onSlideStart      | Function | null              | Callback on Open/Close Animation Start <br> @param {Boolean} isOpen <br> @param {String} contentID \* Don't ID Attribute |
+| onSlideEnd        | Function | null              | Callback on Open/Close Animation End <br>  @param {Boolean} isOpen <br> @param {String} contentID \* Don't ID Attribute                                                                               |
 
 
 ## Methods
 
 Open/Close Content
-```es6
-open(contentID,[isRunCallback,isAimation])
+```javascript
+handyCollapse.open(contentID,[isRunCallback,isAimation])
 ```
-```es6
-close(contentID,[isRunCallback,isAimation])
+```javascript
+handyCollapse.close(contentID,[isRunCallback,isAimation])
 ```
 
 ## Sample
 [More example is here](https://github.com/sk-rt/handy-collapse/tree/master/sample)
 ### JS
-```es6
+```javascript
+
+//Default Options
+const myAccrodion = new HandyCollapse();
+
 //Full Options
-let myAccrodion = new HandyCollapse({
+const myAccrodionCustom = new HandyCollapse({
     nameSpace: "hc",
     activeClass: "is-active",
+    isAimation: true,
     closeOthers: true,
-    animatinSpeed: 500,
+    animatinSpeed: 400,
     cssEasing: "ease",
     onSlideStart: (isOpen, contentID) => {
         console.log(isOpen);
-        let buttonEl = document.querySelector(`[data-callback-control='${contentID}']`);
+        const buttonEl = document.querySelectorAll(`[data-hc-control='${contentID}']`);
         console.log(buttonEl);
     },
      onSlideStart: (isOpen, contentID) => {
         console.log(isOpen);
-        let buttonEl = document.querySelector(`[data-callback-control='${contentID}']`);
-        console.log(buttonEl);
+        const contentEl = document.querySelector(`[data-hc-content='${contentID}']`);
+        console.log(contentEl);
     }
 });
+
 // Open by Js
 myAccrodion.open("content01")
 
+// Close by Js
+myAccrodion.close("content01")
 ```
 ### HTML
 ```html
 <!-- 
-    BUTTON:  data-{namespase}-control="{ID}"
-    CONTENT:  data-{namespase}-content="{ID}"
+    BUTTON :  data-{namespase}-control="{ID}" * multiple element
+    CONTENT:  data-{namespase}-content="{ID}" * only one element
  -->
-
+<!-- basic -->
 <button type="button" data-hc-control="content01">
     Show/Hide Content 01
 </button>
-<div  data-hc-content="content01">
+<div data-hc-content="content01">
     ...
     Content 01
     ...
 </div>
+
 <!-- if add activeClass(def: "is-active"), Opened on init. -->
-<button  type="button" class="is-active"　data-hc-control="content02">
+<button type="button" class="is-active"　data-hc-control="content02">
     Show/Hide Content 02
 </button>
 <div class="is-active" data-hc-content="content02">
     ...
-    Content 01
+    Content 02
     ...
+</div>
+
+<!-- can use nested accordion -->
+<button type="button"　data-hc-control="parentContent">
+    Show/Hide parent content
+</button>
+<div data-hc-content="parentContent">
+    ...
+    parent content
+    ...
+    <button type="button"　data-hc-control="childContent">
+        Show/Hide child content
+    </button>
+    <div data-hc-content="childContent">
+        ...
+        child content
+        ...
+    </div>
 </div>
 ```
 
