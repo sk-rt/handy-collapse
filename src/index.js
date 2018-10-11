@@ -51,7 +51,7 @@ class HandyCollapse {
 			contentEl.style.maxHeight = "none";
 			let isOpen = contentEl.classList.contains(this.activeClass);
 			let id = contentEl.getAttribute(this.toggleContentAttr);
-			this.setItemStetus(id, isOpen);
+			this.setItemStatus(id, isOpen);
 
 			if (!isOpen) {
 				this.close(id, false, false);
@@ -64,7 +64,7 @@ class HandyCollapse {
 	 * Add toggleButton Listners
 	 */
 	setListner() {
-		Array.prototype.slice.call(this.toggleButtomEls).forEach((buttonEl, index) => {
+		Array.prototype.slice.call(this.toggleButtomEls).forEach((buttonEl) => {
 			// event
 			let id = buttonEl.getAttribute(this.toggleButtonAttr);
 			if (id) {
@@ -84,9 +84,10 @@ class HandyCollapse {
 	 * @param {String} id
 	 * @param {Boolian} isOpen
 	 */
-	setItemStetus(id, isOpen) {
+	setItemStatus(id, isOpen) {
 		this.itemsStatus[id] = {
-			isOpen: isOpen
+			isOpen: isOpen,
+			isAnimating: false
 		};
 	}
 
@@ -95,6 +96,7 @@ class HandyCollapse {
 	 * @param {String} id - accordion ID
 	 */
 	toggleSlide(id, isRunCallback = true) {
+		if (this.itemsStatus[id].isAnimating) return;
 		if (this.itemsStatus[id].isOpen === false) {
 			this.open(id, isRunCallback, this.isAimation);
 		} else {
@@ -107,6 +109,10 @@ class HandyCollapse {
 	 */
 	open(id, isRunCallback = true, isAimation = true) {
 		if (!id) return;
+		if (!this.itemsStatus.hasOwnProperty(id)) {
+			this.setItemStatus(id, false);
+		}
+		this.itemsStatus[id].isAnimating = true;
 
 		//Close Others
 		if (this.closeOthers) {
@@ -117,18 +123,21 @@ class HandyCollapse {
 		}
 		if (isRunCallback !== false) this.onSlideStart(true, id);
 
+		//Content : Set getHeight, add activeClass
 		let toggleBody = document.querySelector(`[${this.toggleContentAttr}='${id}']`);
 		let clientHeight = this.getTargetHeight(toggleBody);
 		toggleBody.classList.add(this.activeClass);
 
+		//Button : add activeClass
 		let toggleButton = document.querySelectorAll(`[${this.toggleButtonAttr}='${id}']`);
-		if (toggleButton.length > 0 ) {
+		if (toggleButton.length > 0) {
 			Array.prototype.slice.call(toggleButton).forEach((button, index) => {
-				button.classList.add(this.activeClass)
+				button.classList.add(this.activeClass);
 			});
 		}
 
 		if (isAimation) {
+			//Slide Animation
 			toggleBody.style.overflow = "hidden";
 			toggleBody.style.transition = `${this.animatinSpeed}ms ${this.cssEasing}`;
 			toggleBody.style.maxHeight = (clientHeight || "1000") + "px";
@@ -137,14 +146,15 @@ class HandyCollapse {
 				toggleBody.style.maxHeight = "none";
 				toggleBody.style.transition = "";
 				toggleBody.style.overflow = "";
+				this.itemsStatus[id].isAnimating = false;
 			}, this.animatinSpeed);
 		} else {
+			//No Animation
 			toggleBody.style.maxHeight = "none";
 			toggleBody.style.overflow = "";
+			this.itemsStatus[id].isAnimating = false;
 		}
-		if (this.itemsStatus.hasOwnProperty(id)) {
-			this.itemsStatus[id].isOpen = true;
-		}
+		this.itemsStatus[id].isOpen = true;
 	}
 	/**
 	 * Close accordion
@@ -152,8 +162,13 @@ class HandyCollapse {
 	 */
 	close(id, isRunCallback = true, isAimation = true) {
 		if (!id) return;
-
+		if (!this.itemsStatus.hasOwnProperty(id)) {
+			this.setItemStatus(id, false);
+		}
+		this.itemsStatus[id].isAnimating = true;
 		if (isRunCallback !== false) this.onSlideStart(false, id);
+
+		//Content : Set getHeight, remove activeClass
 		let toggleBody = document.querySelector(`[${this.toggleContentAttr}='${id}']`);
 		toggleBody.style.overflow = "hidden";
 		toggleBody.classList.remove(this.activeClass);
@@ -161,21 +176,27 @@ class HandyCollapse {
 		setTimeout(() => {
 			toggleBody.style.maxHeight = "0px";
 		}, 1);
+
+		//Buttons : Remove activeClass
 		let toggleButton = document.querySelectorAll(`[${this.toggleButtonAttr}='${id}']`);
-		if (toggleButton.length > 0 ) {
+		if (toggleButton.length > 0) {
 			Array.prototype.slice.call(toggleButton).forEach((button, index) => {
-				button.classList.remove(this.activeClass)
+				button.classList.remove(this.activeClass);
 			});
 		}
 
 		if (isAimation) {
+			//Slide Animation
 			toggleBody.style.transition = `${this.animatinSpeed}ms ${this.cssEasing}`;
 			setTimeout(() => {
 				if (isRunCallback !== false) this.onSlideEnd(false, id);
 				toggleBody.style.transition = "";
+				this.itemsStatus[id].isAnimating = false;
 			}, this.animatinSpeed);
 		} else {
+			//No Animation
 			this.onSlideEnd(false, id);
+			this.itemsStatus[id].isAnimating = false;
 		}
 		if (this.itemsStatus.hasOwnProperty(id)) {
 			this.itemsStatus[id].isOpen = false;
