@@ -19,9 +19,9 @@ class HandyCollapse {
                 toggleButtonAttr: `data-${options.nameSpace || "hc"}-control`,
                 toggleContentAttr: `data-${options.nameSpace || "hc"}-content`,
                 activeClass: "is-active",
-                isAimation: true,
+                isAnimation: true,
                 closeOthers: true,
-                animatinSpeed: 400,
+                animationSpeed: 400,
                 cssEasing: "ease-in-out",
                 onSlideStart: () => false,
                 onSlideEnd: () => false
@@ -98,16 +98,16 @@ class HandyCollapse {
     toggleSlide(id, isRunCallback = true) {
         if (this.itemsStatus[id].isAnimating) return;
         if (this.itemsStatus[id].isOpen === false) {
-            this.open(id, isRunCallback, this.isAimation);
+            this.open(id, isRunCallback, this.isAnimation);
         } else {
-            this.close(id, isRunCallback, this.isAimation);
+            this.close(id, isRunCallback, this.isAnimation);
         }
     }
     /**
      * Open accordion
      * @param {String} id - accordion ID
      */
-    open(id, isRunCallback = true, isAimation = true) {
+    open(id, isRunCallback = true, isAnimation = true) {
         if (!id) return;
         if (!this.itemsStatus.hasOwnProperty(id)) {
             this.setItemStatus(id, false);
@@ -118,7 +118,7 @@ class HandyCollapse {
         if (this.closeOthers) {
             Array.prototype.slice.call(this.toggleBodyEls).forEach((contentEl, index) => {
                 let closeId = contentEl.getAttribute(this.toggleContentAttr);
-                if (closeId !== id) this.close(closeId, false, isAimation);
+                if (closeId !== id) this.close(closeId, false, isAnimation);
             });
         }
         if (isRunCallback !== false) this.onSlideStart(true, id);
@@ -136,10 +136,10 @@ class HandyCollapse {
             });
         }
 
-        if (isAimation) {
+        if (isAnimation) {
             //Slide Animation
             toggleBody.style.overflow = "hidden";
-            toggleBody.style.transition = `${this.animatinSpeed}ms ${this.cssEasing}`;
+            toggleBody.style.transition = `${this.animationSpeed}ms ${this.cssEasing}`;
             toggleBody.style.maxHeight = (clientHeight || "1000") + "px";
             setTimeout(() => {
                 if (isRunCallback !== false) this.onSlideEnd(true, id);
@@ -147,7 +147,7 @@ class HandyCollapse {
                 toggleBody.style.transition = "";
                 toggleBody.style.overflow = "";
                 this.itemsStatus[id].isAnimating = false;
-            }, this.animatinSpeed);
+            }, this.animationSpeed);
         } else {
             //No Animation
             toggleBody.style.maxHeight = "none";
@@ -160,7 +160,7 @@ class HandyCollapse {
      * Close accordion
      * @param {String} id - accordion ID
      */
-    close(id, isRunCallback = true, isAimation = true) {
+    close(id, isRunCallback = true, isAnimation = true) {
         if (!id) return;
         if (!this.itemsStatus.hasOwnProperty(id)) {
             this.setItemStatus(id, false);
@@ -185,14 +185,14 @@ class HandyCollapse {
             });
         }
 
-        if (isAimation) {
+        if (isAnimation) {
             //Slide Animation
-            toggleBody.style.transition = `${this.animatinSpeed}ms ${this.cssEasing}`;
+            toggleBody.style.transition = `${this.animationSpeed}ms ${this.cssEasing}`;
             setTimeout(() => {
                 if (isRunCallback !== false) this.onSlideEnd(false, id);
                 toggleBody.style.transition = "";
                 this.itemsStatus[id].isAnimating = false;
-            }, this.animatinSpeed);
+            }, this.animationSpeed);
         } else {
             //No Animation
             this.onSlideEnd(false, id);

@@ -7,7 +7,7 @@ A pure Javascript module for accordion/collapse UI without JQuery.
 
 ### Install
 
-Using npm, install handy-collaps  
+Using npm, install handy-collapse  
 [> npm](https://www.npmjs.com/package/handy-collapse)
 
 ```bash
@@ -16,7 +16,7 @@ $ npm install handy-collapse --save
 
 ### Import
 
-```es6
+```javascript
 import HandyCollapse from "handy-collapse";
 ```
 or html
@@ -25,7 +25,7 @@ or html
 ```
 ### Initialize
 
-```es6
+```javascript
 new HandyCollapse(options);
 ```
 ### Markup
@@ -52,10 +52,10 @@ new HandyCollapse(options);
 | toggleButtonAttr  | String   | "data-hc-control" | data attribute for Button Element                                                                              |
 | toggleContentAttr | String   | "data-hc-content" | data attribute for Content Element                                                                             |
 | activeClass       | String   | "is-active"       | Add class on opened Element                                                                                    |
-| isAimation        | Boolean  | true              | animation Slide                                                                                                |
+| isAnimation        | Boolean  | true              | animation Slide                                                                                                |
 | closeOthers       | Boolean  | true              | Close others Content                                                                                           |
-| animatinSpeed     | Number   | 400               | css transition duration(ms)                                                                                    |
-| cssEasing         | String   | "ease-in-out"     | css transition easing (only isAimation:true)                                                                   |
+| animationSpeed     | Number   | 400               | css transition duration(ms)                                                                                    |
+| cssEasing         | String   | "ease-in-out"     | css transition easing (only isAnimation:true)                                                                   |
 | onSlideStart      | Function | null              | Callback on Open/Close Animation Start <br> @param {Boolean} isOpen <br> @param {String} contentID \* Don't ID Attribute |
 | onSlideEnd        | Function | null              | Callback on Open/Close Animation End <br>  @param {Boolean} isOpen <br> @param {String} contentID \* Don't ID Attribute                                                                               |
 
@@ -64,10 +64,10 @@ new HandyCollapse(options);
 
 Open/Close Content
 ```javascript
-handyCollapse.open(contentID,[isRunCallback,isAimation])
+handyCollapse.open(contentID,[isRunCallback,isAnimation])
 ```
 ```javascript
-handyCollapse.close(contentID,[isRunCallback,isAimation])
+handyCollapse.close(contentID,[isRunCallback,isAnimation])
 ```
 
 ## Sample
@@ -82,16 +82,16 @@ const myAccrodion = new HandyCollapse();
 const myAccrodionCustom = new HandyCollapse({
     nameSpace: "hc",
     activeClass: "is-active",
-    isAimation: true,
+    isAnimation: true,
     closeOthers: true,
-    animatinSpeed: 400,
+    animationSpeed: 400,
     cssEasing: "ease",
     onSlideStart: (isOpen, contentID) => {
         console.log(isOpen);
         const buttonEl = document.querySelectorAll(`[data-hc-control='${contentID}']`);
         console.log(buttonEl);
     },
-     onSlideStart: (isOpen, contentID) => {
+    onSlideEnd: (isOpen, contentID) => {
         console.log(isOpen);
         const contentEl = document.querySelector(`[data-hc-content='${contentID}']`);
         console.log(contentEl);
