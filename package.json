@@ -22,6 +22,7 @@
   "scripts": {
     "format": "prettier --write 'src/**/*.js'",
     "dist": "babel src/index.js --compact=true --no-comments --out-file dist/handy-collapse.js ",
+    "build": "babel src/index.js --compact=true --no-comments --out-file sample/handy-collapse.js ",
     "publish": "npm publish"
   },
   "devDependencies": {

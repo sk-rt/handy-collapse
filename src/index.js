@@ -6,7 +6,7 @@ handyCollapse
 
 ************************************/
 /**
- * @constructor handyCollapse
+ * @constructor HandyCollapse
  * @param {Object} options
  */
 class HandyCollapse {
