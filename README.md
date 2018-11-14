@@ -1,6 +1,7 @@
 # handy-collaps.js
 
 A pure Javascript module for accordion/collapse UI without JQuery.  
+[> examples](https://handy-collapse.netlify.com/)
 
 
 ## Usage
@@ -71,7 +72,8 @@ handyCollapse.close(contentID,[isRunCallback,isAnimation])
 ```
 
 ## Sample
-[More example is here](https://github.com/sk-rt/handy-collapse/tree/master/sample)
+[examples](https://handy-collapse.netlify.com/)  
+
 ### JS
 ```javascript
 
