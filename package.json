@@ -1,6 +1,6 @@
 {
   "name": "handy-collapse",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A pure Javascript module for accordion/collapse UI without JQuery",
   "main": "dist/handy-collapse.js",
   "author": "R Sakai",
