@@ -11,23 +11,19 @@ handyCollapse
  */
 class HandyCollapse {
     constructor(options = {}) {
-        Object.assign(
-            this,
-            {
-                //default options
-                nameSpace: "hc",
-                toggleButtonAttr: `data-${options.nameSpace || "hc"}-control`,
-                toggleContentAttr: `data-${options.nameSpace || "hc"}-content`,
-                activeClass: "is-active",
-                isAnimation: true,
-                closeOthers: true,
-                animationSpeed: 400,
-                cssEasing: "ease-in-out",
-                onSlideStart: () => false,
-                onSlideEnd: () => false
-            },
-            options
-        );
+        const defaultOptions = {
+            nameSpace: "hc",
+            toggleButtonAttr: `data-${options.nameSpace || "hc"}-control`,
+            toggleContentAttr: `data-${options.nameSpace || "hc"}-content`,
+            activeClass: "is-active",
+            isAnimation: true,
+            closeOthers: true,
+            animationSpeed: 400,
+            cssEasing: "ease-in-out",
+            onSlideStart: () => false,
+            onSlideEnd: () => false
+        };
+        Object.assign(this, defaultOptions, options);
         this.toggleBodyEls = document.querySelectorAll(`[${this.toggleContentAttr}]`);
         this.toggleButtomEls = document.querySelectorAll(`[${this.toggleButtonAttr}]`);
         this.itemsStatus = {};
@@ -35,7 +31,7 @@ class HandyCollapse {
     }
     init() {
         if (this.toggleBodyEls) {
-            this.setItem();
+            this.initItems();
         }
         if (this.toggleButtomEls) {
             this.setListner();
@@ -44,21 +40,27 @@ class HandyCollapse {
     /**
      * init Param & show/hide items
      */
-    setItem() {
+    initItems() {
         this.itemsStatus = {};
         Array.prototype.slice.call(this.toggleBodyEls).forEach(contentEl => {
-            contentEl.style.overflow = "hidden";
-            contentEl.style.maxHeight = "none";
-            let isOpen = contentEl.classList.contains(this.activeClass);
-            let id = contentEl.getAttribute(this.toggleContentAttr);
-            this.setItemStatus(id, isOpen);
-
-            if (!isOpen) {
-                this.close(id, false, false);
-            } else {
-                this.open(id, false, false);
-            }
+           this.setItem(contentEl);
         });
+    }
+    /**
+     * 
+     * @param {HtmlElement} element 
+     */
+    setItem(element) {
+        element.style.overflow = "hidden";
+        element.style.maxHeight = "none";
+        const isOpen = element.classList.contains(this.activeClass);
+        const id = element.getAttribute(this.toggleContentAttr);
+        this.setItemStatus(id, isOpen);
+        if (!isOpen) {
+            this.close(id, false, false);
+        } else {
+            this.open(id, false, false);
+        }
     }
     /**
      * Add toggleButton Listners
@@ -66,7 +68,7 @@ class HandyCollapse {
     setListner() {
         Array.prototype.slice.call(this.toggleButtomEls).forEach(buttonEl => {
             // event
-            let id = buttonEl.getAttribute(this.toggleButtonAttr);
+            const id = buttonEl.getAttribute(this.toggleButtonAttr);
             if (id) {
                 buttonEl.addEventListener(
                     "click",
@@ -81,8 +83,8 @@ class HandyCollapse {
     }
     /**
      * Set status object
-     * @param {String} id
-     * @param {Boolian} isOpen
+     * @param {string} id
+     * @param {boolian} isOpen
      */
     setItemStatus(id, isOpen) {
         this.itemsStatus[id] = {
@@ -93,7 +95,7 @@ class HandyCollapse {
 
     /**
      * button click listner
-     * @param {String} id - accordion ID
+     * @param {string} id - accordion ID
      */
     toggleSlide(id, isRunCallback = true) {
         if (this.itemsStatus[id].isAnimating) return;
@@ -105,7 +107,7 @@ class HandyCollapse {
     }
     /**
      * Open accordion
-     * @param {String} id - accordion ID
+     * @param {string} id - accordion ID
      */
     open(id, isRunCallback = true, isAnimation = true) {
         if (!id) return;
@@ -124,12 +126,12 @@ class HandyCollapse {
         if (isRunCallback !== false) this.onSlideStart(true, id);
 
         //Content : Set getHeight, add activeClass
-        let toggleBody = document.querySelector(`[${this.toggleContentAttr}='${id}']`);
-        let clientHeight = this.getTargetHeight(toggleBody);
+        const toggleBody = document.querySelector(`[${this.toggleContentAttr}='${id}']`);
+        const clientHeight = this.getTargetHeight(toggleBody);
         toggleBody.classList.add(this.activeClass);
 
         //Button : Add activeClass
-        let toggleButton = document.querySelectorAll(`[${this.toggleButtonAttr}='${id}']`);
+        const toggleButton = document.querySelectorAll(`[${this.toggleButtonAttr}='${id}']`);
         if (toggleButton.length > 0) {
             Array.prototype.slice.call(toggleButton).forEach((button, index) => {
                 button.classList.add(this.activeClass);
@@ -158,7 +160,7 @@ class HandyCollapse {
     }
     /**
      * Close accordion
-     * @param {String} id - accordion ID
+     * @param {string} id - accordion ID
      */
     close(id, isRunCallback = true, isAnimation = true) {
         if (!id) return;
@@ -169,16 +171,16 @@ class HandyCollapse {
         if (isRunCallback !== false) this.onSlideStart(false, id);
 
         //Content : Set getHeight, remove activeClass
-        let toggleBody = document.querySelector(`[${this.toggleContentAttr}='${id}']`);
+        const toggleBody = document.querySelector(`[${this.toggleContentAttr}='${id}']`);
         toggleBody.style.overflow = "hidden";
         toggleBody.classList.remove(this.activeClass);
         toggleBody.style.maxHeight = toggleBody.clientHeight + "px";
         setTimeout(() => {
             toggleBody.style.maxHeight = "0px";
-        }, 1);
+        }, 5);
 
         //Buttons : Remove activeClass
-        let toggleButton = document.querySelectorAll(`[${this.toggleButtonAttr}='${id}']`);
+        const toggleButton = document.querySelectorAll(`[${this.toggleButtonAttr}='${id}']`);
         if (toggleButton.length > 0) {
             Array.prototype.slice.call(toggleButton).forEach((button, index) => {
                 button.classList.remove(this.activeClass);
@@ -205,16 +207,16 @@ class HandyCollapse {
     /**
      * Get Elemet Height
      * @param {Element} targetEl - target Element
-     * @return {Number} Height
+     * @return {number} Height(px)
      */
     getTargetHeight(targetEl) {
         if (!targetEl) return;
-        let cloneEl = targetEl.cloneNode(true);
-        let parentEl = targetEl.parentNode;
+        const cloneEl = targetEl.cloneNode(true);
+        const parentEl = targetEl.parentNode;
         cloneEl.style.maxHeight = "none";
         cloneEl.style.opacity = "0";
         parentEl.appendChild(cloneEl);
-        let clientHeight = cloneEl.clientHeight;
+        const clientHeight = cloneEl.clientHeight;
         parentEl.removeChild(cloneEl);
         return clientHeight;
     }
