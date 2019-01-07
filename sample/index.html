@@ -6,6 +6,8 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge" />
         <title>Handy Collapse</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css" />
+        <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=desert"></script>
+   
         <style>
             .container {
                 max-width: 800px;
@@ -14,6 +16,23 @@
                 background: #f2f2f2;
                 box-shadow: none;
             }
+            .code-sample {
+                background-color: #333;
+                margin-bottom: 2em;
+                border-radius: 4px;
+            }
+            .tab-button.is-active {
+                pointer-events: none;
+            }
+            .tab-content .box {
+                opacity: 0;
+                transform: translateY(20px);
+                transition: .5s;
+            }
+            .tab-content.is-active .box {
+                opacity: 1;
+                transform: translateY(0px);
+            }
         </style>
         <script src="./handy-collapse.js"></script>
         <script>
@@ -21,29 +40,32 @@
                 "DOMContentLoaded",
                 () => {
                     //Basic Accordion
-                    let basic = new HandyCollapse({
-                        nameSpace: "basic",
-                        closeOthers: true
-                    });
+                    const basic = new HandyCollapse();
                     //Nested
-                    let nested = new HandyCollapse({
+                    const nested = new HandyCollapse({
                         nameSpace: "nested",
                         closeOthers: false
                     });
                     //Callback
-                    let callback = new HandyCollapse({
+                    const callback = new HandyCollapse({
                         nameSpace: "callback",
                         closeOthers: false,
                         onSlideStart: (isOpen, contentID) => {
                             console.log(isOpen);
-                            let buttonEl = document.querySelector(`[data-callback-control='${contentID}']`);
+                            const buttonEl = document.querySelector(`[data-callback-control='${contentID}']`);
                             if (!buttonEl) return;
                             if (isOpen) {
-                                buttonEl.textContent = "Opned " + contentID;
+                                buttonEl.textContent = "Opened " + contentID;
                             } else {
                                 buttonEl.textContent = "Closed " + contentID;
                             }
                         }
+                    });
+                    //Callback
+                    const tab = new HandyCollapse({
+                        nameSpace: "tab",
+                        closeOthers: true,
+                        isAnimation: false
                     });
                 },
                 false
@@ -52,17 +74,17 @@
     </head>
 
     <body>
-       
         <div class="container">
             <!-- Basic -->
             <section class="section">
                 <h1 class="title is-1">Basic Accordion</h1>
+                <pre class="code-sample"><code class="prettyprint">new HandyCollapse(); // default options</code></pre>
                 <!-- if add activeClass(def: "is-active"), Opened on init. -->
-                <button type="button" class="button is-primary is-fullwidth is-medium" data-basic-control="content01">
+                <button type="button" class="button is-primary is-fullwidth is-medium" data-hc-control="content01">
                     Content 01
                 </button>
 
-                <div class="is-active" data-basic-content="content01">
+                <div class="is-active" data-hc-content="content01">
                     <div class="box">
                         <p>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
@@ -75,11 +97,11 @@
                         </p>
                     </div>
                 </div>
-                <button type="button" class="button is-primary is-fullwidth is-medium" data-basic-control="content02">
+                <button type="button" class="button is-primary is-fullwidth is-medium" data-hc-control="content02">
                     Content 02
                 </button>
 
-                <div data-basic-content="content02">
+                <div data-hc-content="content02">
                     <div class="box">
                         <p>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
@@ -92,10 +114,10 @@
                         </p>
                     </div>
                 </div>
-                <button type="button" class="button is-primary is-fullwidth is-medium" data-basic-control="content03">
+                <button type="button" class="button is-primary is-fullwidth is-medium" data-hc-control="content03">
                     Content 03
                 </button>
-                <div data-basic-content="content03">
+                <div data-hc-content="content03">
                     <div class="box">
                         <p>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
@@ -107,10 +129,14 @@
                     </div>
                 </div>
             </section>
-
+            <hr />
             <!-- Nested -->
             <section class="section">
                 <h1 class="title is-1">Nested Accordion</h1>
+                <pre class="code-sample"><code class="prettyprint">const nested = new HandyCollapse({
+    nameSpace: "nested",
+    closeOthers: false
+});</code></pre>
                 <button type="button" class="button is-primary is-fullwidth is-medium" data-nested-control="content01">
                     Content 01
                 </button>
@@ -207,10 +233,24 @@
                     </div>
                 </div>
             </section>
-
+            <hr />
             <!-- Callback -->
             <section class="section">
                 <h1 class="title is-1">Callback</h1>
+                <pre class="code-sample"><code class="prettyprint lang-js"> const callback = new HandyCollapse({
+    nameSpace: "callback",
+    closeOthers: false,
+    onSlideStart: (isOpen, contentID) => {
+        console.log(isOpen);
+        let buttonEl = document.querySelector(`[data-callback-control='${contentID}']`);
+        if (!buttonEl) return;
+        if (isOpen) {
+            buttonEl.textContent = "Opened " + contentID;
+        } else {
+            buttonEl.textContent = "Closed " + contentID;
+        }
+    }
+});</code></pre>
                 <button
                     type="button"
                     class="button is-primary is-fullwidth is-medium"
@@ -244,6 +284,108 @@
                         <p>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
                             labore et dolore magna aliqua.<br />
+                            Utenim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                            commodo consequat. Duis auteirure<br />
+                            dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                            Excepteur sint occaecatcupidatat<br />
+                            non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                        </p>
+                    </div>
+                </div>
+            </section>
+            <hr />
+            <!-- Tab -->
+            <section class="section">
+                <h1 class="title is-1">Tab</h1>
+                <pre class="code-sample"><code class="prettyprint lang-js">const tab = new HandyCollapse({
+    nameSpace: "tab",
+    closeOthers: true,
+    isAnimation: false
+});</code></pre>
+                <pre class="code-sample"><code class="prettyprint lang-css"> .tab-button.is-active {
+    pointer-events: none;
+}
+.tab-content .box {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: .5s;
+}
+.tab-content.is-active .box {
+    opacity: 1;
+    transform: translateY(0px);
+}</code></pre>
+
+                <div class="columns">
+                    <div class="column">
+                        <button
+                            type="button"
+                            class="button is-primary is-fullwidth is-medium tab-button is-active"
+                            data-tab-control="content01"
+                        >
+                            Tab 01
+                        </button>
+                    </div>
+                    <div class="column">
+                        <button
+                            type="button"
+                            class="button is-primary is-fullwidth is-medium tab-button"
+                            data-tab-control="content02"
+                        >
+                            Tab 02
+                        </button>
+                    </div>
+                    <div class="column">
+                        <button
+                            type="button"
+                            class="button is-primary is-fullwidth is-medium tab-button"
+                            data-tab-control="content03"
+                        >
+                            Tab 03
+                        </button>
+                    </div>
+                </div>
+                <div data-tab-content="content01" class="is-active tab-content">
+                    <div class="box">
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                            labore et dolore magna aliqua.<br />
+                            Utenim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                            commodo consequat. Duis auteirure<br />
+                            dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                            Excepteur sint occaecatcupidatat<br />
+                            non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                        </p>
+                    </div>
+                </div>
+
+                <div data-tab-content="content02" class="tab-content">
+                    <div class="box">
+                        <p>
+                            laboris nisi ut aliquip ex ea commodo consequat. Duis auteirure<br />
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                            labore et dolore magna aliqua.<br />
+                            Utenim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                            commodo consequat. Duis auteirure<br />
+                            dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                            Excepteur sint occaecatcupidatat<br />
+                            non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum
+                            dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                            dolore magna aliqua.<br />
+                            Utenim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                            commodo consequat. Duis auteirure<br />
+                            dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                            Excepteur sint occaecatcupidatat<br />
+                            non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                        </p>
+                    </div>
+                </div>
+                <div data-tab-content="content03" class="tab-content">
+                    <div class="box">
+                        <p>
+                            Excepteur sint occaecatcupidatat<br />
+                            non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum
+                            dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                            dolore magna aliqua.<br />
                             Utenim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
                             commodo consequat. Duis auteirure<br />
                             dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
