@@ -10,7 +10,19 @@ module.exports = {
     },
     module: {
         rules: [
-            
+            {
+                enforce: 'pre',
+                test: /\.ts?$/,
+                use: [
+                    {
+                        loader: 'eslint-loader',
+                        options: {
+                            fix: true,
+                            failOnError: true
+                        }
+                    }
+                ]
+            },
             {
                 test: /\.ts$/,
                 use: 'ts-loader',
