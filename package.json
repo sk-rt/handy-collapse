@@ -2,7 +2,7 @@
   "name": "handy-collapse",
   "version": "0.1.4",
   "description": "A pure Javascript module for accordion/collapse UI without JQuery",
-  "main": "dist/handy-collapse.js",
+  "main": "dist/index.js",
   "author": "R Sakai",
   "repository": {
     "type": "git",
@@ -22,14 +22,16 @@
   "scripts": {
     "format": "prettier --write 'src/**/*.ts'",
     "dev": "webpack-dev-server",
-    "build":"NODE_ENV=production webpack -p",
-    "dist": "npm run clean && NODE_ENV=production webpack -p && npm run build-declaration",
+    "build": "NODE_ENV=production webpack -p",
+    "dist": "npm run clean && NODE_ENV=production webpack -p && npm run build-declaration && npm run sample-dist",
     "build-declaration": "tsc src/index.ts -d --emitDeclarationOnly --declarationDir ./dist",
+    "sample-dist": "cpx dist/standalone/* sample/js/",
     "clean": "rimraf dist",
     "prepare": "npm run dist",
     "publish": "npm publish"
   },
   "devDependencies": {
+    "cpx": "^1.5.0",
     "prettier": "^1.17.1",
     "rimraf": "^2.6.3",
     "ts-loader": "^6.0.2",
