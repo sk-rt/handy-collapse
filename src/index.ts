@@ -1,35 +1,63 @@
-/***********************************
-
-
-handyCollapse
-
-
-************************************/
 /**
- * @constructor HandyCollapse
- * @param {Object} options
+ * handyCollapse
+ * https://github.com/sk-rt/handy-collapse
+ * Copyright (c) 2018  Ryuta Sakai
+ * Licensed under the MIT license.
  */
-class HandyCollapse {
-    constructor(options = {}) {
+
+export interface Options {
+    nameSpace?: string;
+    toggleButtonAttr?: string;
+    toggleContentAttr?: string;
+    activeClass?: string;
+    isAnimation?: boolean;
+    closeOthers?: boolean;
+    animationSpeed?: number;
+    cssEasing?: string;
+    onSlideStart?: (isOpen: boolean, id: string) => false;
+    onSlideEnd?: (isOpen: boolean, id: string) => false;
+}
+export interface ItemStatus {
+    [key: string]: {
+        isOpen: boolean;
+        isAnimating: boolean;
+    };
+}
+export default class HandyCollapse {
+    toggleBodyEls: NodeListOf<HTMLElement>;
+    toggleButtomEls: NodeListOf<HTMLElement>;
+    itemsStatus: ItemStatus;
+    nameSpace: string;
+    toggleButtonAttr: string;
+    toggleContentAttr: string;
+    activeClass: string;
+    isAnimation: boolean;
+    closeOthers: boolean;
+    animationSpeed: number;
+    cssEasing: string;
+    onSlideStart: (isOpen: boolean, id: string) => undefined;
+    onSlideEnd: (isOpen: boolean, id: string) => undefined;
+
+    constructor(options: Options) {
+        const nameSpace = typeof options === "object" && "nameSpace" in options ? options.nameSpace : "hc";
         const defaultOptions = {
             nameSpace: "hc",
-            toggleButtonAttr: `data-${options.nameSpace || "hc"}-control`,
-            toggleContentAttr: `data-${options.nameSpace || "hc"}-content`,
+            toggleButtonAttr: `data-${nameSpace}-control`,
+            toggleContentAttr: `data-${nameSpace}-content`,
             activeClass: "is-active",
             isAnimation: true,
             closeOthers: true,
             animationSpeed: 400,
             cssEasing: "ease-in-out",
-            onSlideStart: () => false,
-            onSlideEnd: () => false
+            onSlideStart: () => undefined,
+            onSlideEnd: () => undefined
         };
         Object.assign(this, defaultOptions, options);
         this.toggleBodyEls = document.querySelectorAll(`[${this.toggleContentAttr}]`);
         this.toggleButtomEls = document.querySelectorAll(`[${this.toggleButtonAttr}]`);
-        this.itemsStatus = {};
         this.init();
     }
-    init() {
+    private init() {
         if (this.toggleBodyEls) {
             this.initItems();
         }
@@ -40,17 +68,17 @@ class HandyCollapse {
     /**
      * init Param & show/hide items
      */
-    initItems() {
+    private initItems() {
         this.itemsStatus = {};
         Array.prototype.slice.call(this.toggleBodyEls).forEach(contentEl => {
-           this.setItem(contentEl);
+            this.setItem(contentEl);
         });
     }
     /**
-     * 
-     * @param {HtmlElement} element 
+     *
+     * @param  element
      */
-    setItem(element) {
+    private setItem(element: HTMLElement) {
         element.style.overflow = "hidden";
         element.style.maxHeight = "none";
         const isOpen = element.classList.contains(this.activeClass);
@@ -65,7 +93,7 @@ class HandyCollapse {
     /**
      * Add toggleButton Listners
      */
-    setListner() {
+    private setListner() {
         Array.prototype.slice.call(this.toggleButtomEls).forEach(buttonEl => {
             // event
             const id = buttonEl.getAttribute(this.toggleButtonAttr);
@@ -83,10 +111,10 @@ class HandyCollapse {
     }
     /**
      * Set status object
-     * @param {string} id
-     * @param {boolian} isOpen
+     * @param id
+     * @param isOpen
      */
-    setItemStatus(id, isOpen) {
+    private setItemStatus(id: string, isOpen: boolean) {
         this.itemsStatus[id] = {
             isOpen: isOpen,
             isAnimating: false
@@ -97,7 +125,7 @@ class HandyCollapse {
      * button click listner
      * @param {string} id - accordion ID
      */
-    toggleSlide(id, isRunCallback = true) {
+    toggleSlide(id: string, isRunCallback = true) {
         if (this.itemsStatus[id].isAnimating) return;
         if (this.itemsStatus[id].isOpen === false) {
             this.open(id, isRunCallback, this.isAnimation);
@@ -109,7 +137,7 @@ class HandyCollapse {
      * Open accordion
      * @param {string} id - accordion ID
      */
-    open(id, isRunCallback = true, isAnimation = true) {
+    open(id: string, isRunCallback = true, isAnimation = true) {
         if (!id) return;
         if (!this.itemsStatus.hasOwnProperty(id)) {
             this.setItemStatus(id, false);
@@ -126,7 +154,7 @@ class HandyCollapse {
         if (isRunCallback !== false) this.onSlideStart(true, id);
 
         //Content : Set getHeight, add activeClass
-        const toggleBody = document.querySelector(`[${this.toggleContentAttr}='${id}']`);
+        const toggleBody = document.querySelector(`[${this.toggleContentAttr}='${id}']`) as HTMLElement;
         const clientHeight = this.getTargetHeight(toggleBody);
         toggleBody.classList.add(this.activeClass);
 
@@ -160,9 +188,9 @@ class HandyCollapse {
     }
     /**
      * Close accordion
-     * @param {string} id - accordion ID
+     * @param id - accordion ID
      */
-    close(id, isRunCallback = true, isAnimation = true) {
+    close(id: string, isRunCallback = true, isAnimation = true) {
         if (!id) return;
         if (!this.itemsStatus.hasOwnProperty(id)) {
             this.setItemStatus(id, false);
@@ -171,7 +199,7 @@ class HandyCollapse {
         if (isRunCallback !== false) this.onSlideStart(false, id);
 
         //Content : Set getHeight, remove activeClass
-        const toggleBody = document.querySelector(`[${this.toggleContentAttr}='${id}']`);
+        const toggleBody = document.querySelector(`[${this.toggleContentAttr}='${id}']`) as HTMLElement;
         toggleBody.style.overflow = "hidden";
         toggleBody.classList.remove(this.activeClass);
         toggleBody.style.maxHeight = toggleBody.clientHeight + "px";
@@ -206,12 +234,12 @@ class HandyCollapse {
     }
     /**
      * Get Elemet Height
-     * @param {Element} targetEl - target Element
-     * @return {number} Height(px)
+     * @param targetEl - target Element
+     * @return Height(px)
      */
-    getTargetHeight(targetEl) {
+    getTargetHeight(targetEl: HTMLElement): number {
         if (!targetEl) return;
-        const cloneEl = targetEl.cloneNode(true);
+        const cloneEl = targetEl.cloneNode(true) as HTMLElement;
         const parentEl = targetEl.parentNode;
         cloneEl.style.maxHeight = "none";
         cloneEl.style.opacity = "0";
@@ -220,7 +248,4 @@ class HandyCollapse {
         parentEl.removeChild(cloneEl);
         return clientHeight;
     }
-}
-if (typeof module === "object") {
-    module.exports = HandyCollapse;
 }
