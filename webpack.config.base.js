@@ -1,21 +1,20 @@
-
 /**
  * Webpack config common
  */
 module.exports = {
-    target: 'web',
+    target: "web",
     devtool: false,
     resolve: {
-        extensions: ['.ts', '.tsx', '.js']
+        extensions: [".ts", ".tsx", ".js"]
     },
     module: {
         rules: [
             {
-                enforce: 'pre',
+                enforce: "pre",
                 test: /\.ts?$/,
                 use: [
                     {
-                        loader: 'eslint-loader',
+                        loader: "eslint-loader",
                         options: {
                             fix: true,
                             failOnError: true
@@ -25,7 +24,7 @@ module.exports = {
             },
             {
                 test: /\.ts$/,
-                use: 'ts-loader',
+                use: "ts-loader",
                 exclude: /node_modules/
             }
         ]
@@ -34,7 +33,7 @@ module.exports = {
         contentBase: `${__dirname}/dev`,
         watchContentBase: true,
         open: true,
-        host: '0.0.0.0',
+        host: "0.0.0.0",
         useLocalIp: true,
         port: 8888
     }

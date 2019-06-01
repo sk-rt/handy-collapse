@@ -17,16 +17,16 @@ export interface Options {
     onSlideStart: (isOpen: boolean, id: string) => void;
     onSlideEnd: (isOpen: boolean, id: string) => void;
 }
-interface ItemStatus {
+interface ItemState {
     [key: string]: {
         isOpen: boolean;
         isAnimating: boolean;
     };
 }
 export default class HandyCollapse {
-    toggleBodyEls: NodeListOf<HTMLElement>;
-    toggleButtomEls: NodeListOf<HTMLElement>;
-    private itemsStatus: ItemStatus = {};
+    toggleContentEls: NodeListOf<HTMLElement>;
+    toggleButtonEls: NodeListOf<HTMLElement>;
+    private itemsState: ItemState = {};
     options: Options;
     constructor(_options: Partial<Options> = {}) {
         const nameSpace = typeof _options === "object" && "nameSpace" in _options ? _options.nameSpace : "hc";
@@ -46,49 +46,44 @@ export default class HandyCollapse {
             ...defaultOptions,
             ..._options
         };
-        this.toggleBodyEls = document.querySelectorAll(`[${this.options.toggleContentAttr}]`);
-        this.toggleButtomEls = document.querySelectorAll(`[${this.options.toggleButtonAttr}]`);
+        this.toggleContentEls = document.querySelectorAll(`[${this.options.toggleContentAttr}]`);
+        this.toggleButtonEls = document.querySelectorAll(`[${this.options.toggleButtonAttr}]`);
         this.init();
     }
     private init() {
-        if (this.toggleBodyEls) {
-            this.initItems();
+        if (this.toggleContentEls) {
+            this.initContentsState(this.toggleContentEls);
         }
-        if (this.toggleButtomEls) {
-            this.setListner();
+        if (this.toggleButtonEls.length > 0) {
+            this.handleButtonsEvent(this.toggleButtonEls);
         }
     }
     /**
      * init Param & show/hide items
      */
-    private initItems() {
-        this.itemsStatus = {};
-        [].slice.call(this.toggleBodyEls).forEach(contentEl => {
-            this.setItem(contentEl);
+    private initContentsState(contentEls: NodeList) {
+        this.itemsState = {};
+        [].slice.call(contentEls).forEach((contentEl: HTMLElement) => {
+            contentEl.style.overflow = "hidden";
+            contentEl.style.maxHeight = "none";
+            const isOpen = contentEl.classList.contains(this.options.activeClass);
+            const id = contentEl.getAttribute(this.options.toggleContentAttr);
+            if (!id) return;
+            this.setItemState(id, isOpen);
+            if (!isOpen) {
+                this.close(id, false, false);
+            } else {
+                this.open(id, false, false);
+            }
         });
     }
-    /**
-     * @param  element
-     */
-    private setItem(element: HTMLElement) {
-        element.style.overflow = "hidden";
-        element.style.maxHeight = "none";
-        const isOpen = element.classList.contains(this.options.activeClass);
-        const id = element.getAttribute(this.options.toggleContentAttr);
-        if (!id) return;
-        this.setItemStatus(id, isOpen);
-        if (!isOpen) {
-            this.close(id, false, false);
-        } else {
-            this.open(id, false, false);
-        }
-    }
+
     /**
      * Add toggleButton Listners
      */
-    private setListner() {
-        [].slice.call(this.toggleButtomEls).forEach((buttonEl: HTMLElement) => {
-            // event
+    handleButtonsEvent(buttonElement: NodeList) {
+        if (!buttonElement || buttonElement.length === 0) return;
+        [].slice.call(buttonElement).forEach((buttonEl: HTMLElement) => {
             const id = buttonEl.getAttribute(this.options.toggleButtonAttr);
             if (id) {
                 buttonEl.addEventListener(
@@ -103,12 +98,10 @@ export default class HandyCollapse {
         });
     }
     /**
-     * Set status object
-     * @param id
-     * @param isOpen
+     * Set state
      */
-    private setItemStatus(id: string, isOpen: boolean) {
-        this.itemsStatus[id] = {
+    private setItemState(id: string, isOpen: boolean) {
+        this.itemsState[id] = {
             isOpen: isOpen,
             isAnimating: false
         };
@@ -119,8 +112,8 @@ export default class HandyCollapse {
      * @param  id - accordion ID
      */
     toggleSlide(id: string, isRunCallback = true) {
-        if (this.itemsStatus[id].isAnimating) return;
-        if (this.itemsStatus[id].isOpen === false) {
+        if (this.itemsState[id].isAnimating) return;
+        if (this.itemsState[id].isOpen === false) {
             this.open(id, isRunCallback, this.options.isAnimation);
         } else {
             this.close(id, isRunCallback, this.options.isAnimation);
@@ -132,14 +125,14 @@ export default class HandyCollapse {
      */
     open(id: string, isRunCallback = true, isAnimation = true) {
         if (!id) return;
-        if (!this.itemsStatus.hasOwnProperty(id)) {
-            this.setItemStatus(id, false);
+        if (!this.itemsState.hasOwnProperty(id)) {
+            this.setItemState(id, false);
         }
-        this.itemsStatus[id].isAnimating = true;
+        this.itemsState[id].isAnimating = true;
 
         //Close Others
         if (this.options.closeOthers) {
-            [].slice.call(this.toggleBodyEls).forEach((contentEl: HTMLElement) => {
+            [].slice.call(this.toggleContentEls).forEach((contentEl: HTMLElement) => {
                 const closeId = contentEl.getAttribute(this.options.toggleContentAttr);
                 if (closeId && closeId !== id) this.close(closeId, false, isAnimation);
             });
@@ -169,15 +162,15 @@ export default class HandyCollapse {
                 toggleBody.style.maxHeight = "none";
                 toggleBody.style.transition = "";
                 toggleBody.style.overflow = "";
-                this.itemsStatus[id].isAnimating = false;
+                this.itemsState[id].isAnimating = false;
             }, this.options.animationSpeed);
         } else {
             //No Animation
             toggleBody.style.maxHeight = "none";
             toggleBody.style.overflow = "";
-            this.itemsStatus[id].isAnimating = false;
+            this.itemsState[id].isAnimating = false;
         }
-        this.itemsStatus[id].isOpen = true;
+        this.itemsState[id].isOpen = true;
     }
     /**
      * Close accordion
@@ -185,10 +178,10 @@ export default class HandyCollapse {
      */
     close(id: string, isRunCallback = true, isAnimation = true) {
         if (!id) return;
-        if (!this.itemsStatus.hasOwnProperty(id)) {
-            this.setItemStatus(id, false);
+        if (!this.itemsState.hasOwnProperty(id)) {
+            this.setItemState(id, false);
         }
-        this.itemsStatus[id].isAnimating = true;
+        this.itemsState[id].isAnimating = true;
         if (isRunCallback !== false) this.options.onSlideStart(false, id);
 
         //Content : Set getHeight, remove activeClass
@@ -214,15 +207,15 @@ export default class HandyCollapse {
             setTimeout(() => {
                 if (isRunCallback !== false) this.options.onSlideEnd(false, id);
                 toggleBody.style.transition = "";
-                this.itemsStatus[id].isAnimating = false;
+                this.itemsState[id].isAnimating = false;
             }, this.options.animationSpeed);
         } else {
             //No Animation
             this.options.onSlideEnd(false, id);
-            this.itemsStatus[id].isAnimating = false;
+            this.itemsState[id].isAnimating = false;
         }
-        if (this.itemsStatus.hasOwnProperty(id)) {
-            this.itemsStatus[id].isOpen = false;
+        if (this.itemsState.hasOwnProperty(id)) {
+            this.itemsState[id].isOpen = false;
         }
     }
     /**

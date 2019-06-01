@@ -17,30 +17,24 @@ export interface Options {
     onSlideEnd: (isOpen: boolean, id: string) => void;
 }
 export default class HandyCollapse {
-    toggleBodyEls: NodeListOf<HTMLElement>;
-    toggleButtomEls: NodeListOf<HTMLElement>;
-    private itemsStatus;
+    toggleContentEls: NodeListOf<HTMLElement>;
+    toggleButtonEls: NodeListOf<HTMLElement>;
+    private itemsState;
     options: Options;
     constructor(_options?: Partial<Options>);
     private init;
     /**
      * init Param & show/hide items
      */
-    private initItems;
-    /**
-     * @param  element
-     */
-    private setItem;
+    private initContentsState;
     /**
      * Add toggleButton Listners
      */
-    private setListner;
+    handleButtonsEvent(buttonElement: NodeList): void;
     /**
-     * Set status object
-     * @param id
-     * @param isOpen
+     * Set state
      */
-    private setItemStatus;
+    private setItemState;
     /**
      * button click listner
      * @param  id - accordion ID
