@@ -1,6 +1,6 @@
 {
   "name": "handy-collapse",
-  "version": "0.1.4",
+  "version": "1.0.0",
   "description": "A pure Javascript module for accordion/collapse UI without JQuery",
   "main": "dist/index.js",
   "author": "R Sakai",
@@ -16,7 +16,8 @@
     "accordion",
     "ui",
     "slidedown",
-    "dropdown"
+    "dropdown",
+    "typescript"
   ],
   "license": "MIT",
   "scripts": {

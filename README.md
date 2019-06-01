@@ -153,4 +153,4 @@ myAccrodion.close("content01")
 
 ## License
 
-[MIT](https://opensource.org/licenses/MIT)
+[MIT](./LICENSE.txt)
