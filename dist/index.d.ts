@@ -5,27 +5,6 @@
  * Licensed under the MIT license.
  */
 export interface Options {
-    nameSpace?: string;
-    toggleButtonAttr?: string;
-    toggleContentAttr?: string;
-    activeClass?: string;
-    isAnimation?: boolean;
-    closeOthers?: boolean;
-    animationSpeed?: number;
-    cssEasing?: string;
-    onSlideStart?: (isOpen: boolean, id: string) => false;
-    onSlideEnd?: (isOpen: boolean, id: string) => false;
-}
-export interface ItemStatus {
-    [key: string]: {
-        isOpen: boolean;
-        isAnimating: boolean;
-    };
-}
-export default class HandyCollapse {
-    toggleBodyEls: NodeListOf<HTMLElement>;
-    toggleButtomEls: NodeListOf<HTMLElement>;
-    itemsStatus: ItemStatus;
     nameSpace: string;
     toggleButtonAttr: string;
     toggleContentAttr: string;
@@ -34,16 +13,21 @@ export default class HandyCollapse {
     closeOthers: boolean;
     animationSpeed: number;
     cssEasing: string;
-    onSlideStart: (isOpen: boolean, id: string) => undefined;
-    onSlideEnd: (isOpen: boolean, id: string) => undefined;
-    constructor(options: Options);
+    onSlideStart: (isOpen: boolean, id: string) => void;
+    onSlideEnd: (isOpen: boolean, id: string) => void;
+}
+export default class HandyCollapse {
+    toggleBodyEls: NodeListOf<HTMLElement>;
+    toggleButtomEls: NodeListOf<HTMLElement>;
+    private itemsStatus;
+    options: Options;
+    constructor(_options?: Partial<Options>);
     private init;
     /**
      * init Param & show/hide items
      */
     private initItems;
     /**
-     *
      * @param  element
      */
     private setItem;
@@ -59,12 +43,12 @@ export default class HandyCollapse {
     private setItemStatus;
     /**
      * button click listner
-     * @param {string} id - accordion ID
+     * @param  id - accordion ID
      */
     toggleSlide(id: string, isRunCallback?: boolean): void;
     /**
      * Open accordion
-     * @param {string} id - accordion ID
+     * @param  id - accordion ID
      */
     open(id: string, isRunCallback?: boolean, isAnimation?: boolean): void;
     /**
@@ -77,5 +61,5 @@ export default class HandyCollapse {
      * @param targetEl - target Element
      * @return Height(px)
      */
-    getTargetHeight(targetEl: HTMLElement): number;
+    getTargetHeight(targetEl: HTMLElement): number | void;
 }
