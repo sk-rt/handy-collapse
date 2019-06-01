@@ -2,7 +2,7 @@
   "name": "handy-collapse",
   "version": "0.1.4",
   "description": "A pure Javascript module for accordion/collapse UI without JQuery",
-  "main": "dist/handy-collapse.js",
+  "main": "dist/index.js",
   "author": "R Sakai",
   "repository": {
     "type": "git",
@@ -20,17 +20,30 @@
   ],
   "license": "MIT",
   "scripts": {
-    "format": "prettier --write 'src/**/*.js'",
-    "dist": "babel src/index.js --compact=true --no-comments --out-file dist/handy-collapse.js ",
-    "build": "babel src/index.js --compact=true --no-comments --out-file sample/handy-collapse.js ",
+    "format": "prettier --write 'src/**/*.ts'",
+    "dev": "webpack-dev-server",
+    "build": "NODE_ENV=production webpack -p",
+    "dist": "npm run clean && NODE_ENV=production webpack -p && npm run build-declaration && npm run sample-dist",
+    "build-declaration": "tsc src/index.ts -d --emitDeclarationOnly --declarationDir ./dist",
+    "sample-dist": "cpx dist/standalone/* sample/js/",
+    "clean": "rimraf dist",
+    "prepare": "npm run dist",
     "publish": "npm publish"
   },
   "devDependencies": {
-    "@babel/cli": "^7.1.2",
-    "@babel/core": "^7.1.2",
-    "@babel/plugin-transform-object-assign": "^7.0.0",
-    "@babel/preset-env": "^7.1.0",
-    "prettier": "^1.13.7"
+    "@typescript-eslint/eslint-plugin": "^1.9.0",
+    "cpx": "^1.5.0",
+    "eslint": "^5.16.0",
+    "eslint-config-prettier": "^4.3.0",
+    "eslint-loader": "^2.1.2",
+    "eslint-plugin-prettier": "^3.1.0",
+    "prettier": "^1.17.1",
+    "rimraf": "^2.6.3",
+    "ts-loader": "^6.0.2",
+    "typescript": "^3.4.5",
+    "webpack": "^4.32.2",
+    "webpack-cli": "^3.3.2",
+    "webpack-dev-server": "^3.4.1"
   },
   "dependencies": {}
 }
