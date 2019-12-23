@@ -3,7 +3,7 @@
 A pure Javascript module for accordion/collapse UI without JQuery.  
 [> examples](https://handy-collapse.netlify.com/)
 
-[![NPM](https://nodei.co/npm/handy-collapse.png?compact=true)](https://nodei.co/npm/moodal/)
+[![NPM](https://nodei.co/npm/handy-collapse.png?compact=true)](https://nodei.co/npm/handy-collapse/)
 
 
 [![npm version](https://badge.fury.io/js/handy-collapse.svg)](https://badge.fury.io/js/handy-collapse) 
