@@ -1,7 +1,7 @@
 /**
  * handyCollapse
  * https://github.com/sk-rt/handy-collapse
- * Copyright (c) 2018  Ryuta Sakai
+ * Copyright (c) 2019  Ryuta Sakai
  * Licensed under the MIT license.
  */
 export interface Options {
