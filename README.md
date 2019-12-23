@@ -3,6 +3,12 @@
 A pure Javascript module for accordion/collapse UI without JQuery.  
 [> examples](https://handy-collapse.netlify.com/)
 
+[![NPM](https://nodei.co/npm/handy-collapse.png?compact=true)](https://nodei.co/npm/moodal/)
+
+
+[![npm version](https://badge.fury.io/js/handy-collapse.svg)](https://badge.fury.io/js/handy-collapse) 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/339e9248-8aae-456a-8a3b-345a01138f98/deploy-status)](https://app.netlify.com/sites/handy-collapse/deploys)
+
 
 ## Usage
 
@@ -49,16 +55,16 @@ new HandyCollapse(options);
 
 | Option Name       | Type     | Default           | Desc                                                                                                           |
 | ----------------- | -------- | ----------------- | -------------------------------------------------------------------------------------------------------------- |
-| nameSpace         | String   | "hc"              | Set namespace both "toggleButtonAttr" & "toggleContentAttr"                                                    |
-| toggleButtonAttr  | String   | "data-hc-control" | data attribute for Button Element                                                                              |
-| toggleContentAttr | String   | "data-hc-content" | data attribute for Content Element                                                                             |
-| activeClass       | String   | "is-active"       | Add class on opened Element                                                                                    |
-| isAnimation        | Boolean  | true              | animation Slide                                                                                                |
-| closeOthers       | Boolean  | true              | Close others Content                                                                                           |
-| animationSpeed     | Number   | 400               | css transition duration(ms)                                                                                    |
-| cssEasing         | String   | "ease-in-out"     | css transition easing (only isAnimation:true)                                                                   |
-| onSlideStart      | Function | null              | Callback on Open/Close Animation Start <br> @param {Boolean} isOpen <br> @param {String} contentID \* Don't ID Attribute |
-| onSlideEnd        | Function | null              | Callback on Open/Close Animation End <br>  @param {Boolean} isOpen <br> @param {String} contentID \* Don't ID Attribute                                                                               |
+| nameSpace         | string   | "hc"              | Set namespace both "toggleButtonAttr" & "toggleContentAttr"                                                    |
+| toggleButtonAttr  | string   | "data-hc-control" | data attribute for Button Element                                                                              |
+| toggleContentAttr | string   | "data-hc-content" | data attribute for Content Element                                                                             |
+| activeClass       | string   | "is-active"       | Add class on opened Element                                                                                    |
+| isAnimation        | boolean  | true              | animation Slide                                                                                                |
+| closeOthers       | boolean  | true              | Close others Content                                                                                           |
+| animationSpeed     | number   | 400               | css transition duration(ms)                                                                                    |
+| cssEasing         | string   | "ease-in-out"     | css transition easing (only isAnimation:true)                                                                   |
+| onSlideStart      | (isOpen:boolean,contentID:string)=> void | () => void              | Callback on Open/Close Animation Start <br> @param {Boolean} isOpen <br> @param {String} contentID \* Don't ID Attribute |
+| onSlideEnd        | (isOpen:boolean,contentID:string)=> void | () => void              | Callback on Open/Close Animation End <br>  @param {Boolean} isOpen <br> @param {String} contentID \* Don't ID Attribute                                                                               |
 
 
 ## Methods
