@@ -125,7 +125,7 @@ export default class HandyCollapse {
      */
     open(id: string, isRunCallback = true, isAnimation = true) {
         if (!id) return;
-        if (!this.itemsState.hasOwnProperty(id)) {
+        if (!Object.prototype.hasOwnProperty.call(this.itemsState, id)) {
             this.setItemState(id, false);
         }
         this.itemsState[id].isAnimating = true;
@@ -178,7 +178,7 @@ export default class HandyCollapse {
      */
     close(id: string, isRunCallback = true, isAnimation = true) {
         if (!id) return;
-        if (!this.itemsState.hasOwnProperty(id)) {
+        if (!Object.prototype.hasOwnProperty.call(this.itemsState, id)) {
             this.setItemState(id, false);
         }
         this.itemsState[id].isAnimating = true;
@@ -214,7 +214,7 @@ export default class HandyCollapse {
             this.options.onSlideEnd(false, id);
             this.itemsState[id].isAnimating = false;
         }
-        if (this.itemsState.hasOwnProperty(id)) {
+        if (Object.prototype.hasOwnProperty.call(this.itemsState, id)) {
             this.itemsState[id].isOpen = false;
         }
     }
