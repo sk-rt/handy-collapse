@@ -228,6 +228,14 @@ export default class HandyCollapse {
         const cloneEl = targetEl.cloneNode(true) as HTMLElement;
         const parentEl = targetEl.parentNode;
         if (!parentEl) return;
+        // bugfix: Radio button being unchecked when collapsed
+        const inputElements: HTMLInputElement[] = [].slice.call(cloneEl.querySelectorAll("input[name]"));
+        if (inputElements.length !== 0) {
+            const suffix = "-" + new Date().getTime();
+            inputElements.forEach(input => {
+                input.name += suffix;
+            });
+        }
         cloneEl.style.maxHeight = "none";
         cloneEl.style.opacity = "0";
         parentEl.appendChild(cloneEl);
