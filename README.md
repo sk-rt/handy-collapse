@@ -51,6 +51,20 @@ new HandyCollapse(options);
     Toggle Content
 </div>
 ```
+### width `aria-*` attribute for accessibility
+```html
+
+<button type="button" 
+    data-hc-control="uniqID" 
+    aria-expanded="false" 
+    aria-controls="contentID">
+    Show/Hide Content
+</button>
+
+<div id="contentID" data-hc-content="uniqID" aria-hidden="true">
+    Toggle Content
+</div>
+```
 ## Options
 
 | Option Name       | Type     | Default           | Desc                                                                                                           |
@@ -88,7 +102,7 @@ const myAccrodion = new HandyCollapse();
 
 //Full Options
 const myAccrodionCustom = new HandyCollapse({
-    nameSpace: "hc",
+    nameSpace: "hc", // Note: Be sure to set different names when creating multiple instances
     activeClass: "is-active",
     isAnimation: true,
     closeOthers: true,
@@ -119,37 +133,49 @@ myAccrodion.close("content01")
     CONTENT:  data-{namespase}-content="{ID}" * only one element
  -->
 <!-- basic -->
-<button type="button" data-hc-control="content01">
+<button type="button" 
+    data-hc-control="content01" 
+    aria-expanded="false"
+    aria-controls="basicContent01">
     Show/Hide Content 01
 </button>
-<div data-hc-content="content01">
+<div id="basicContent01" data-hc-content="content01" aria-hidden="true">
     ...
     Content 01
     ...
 </div>
 
 <!-- if add activeClass(def: "is-active"), Opened on init. -->
-<button type="button" class="is-active"　data-hc-control="content02">
+<button type="button" 
+    class="is-active"　
+    data-hc-control="content02"
+    aria-expanded="true"
+    aria-controls="basicContent02">
     Show/Hide Content 02
 </button>
-<div class="is-active" data-hc-content="content02">
+<div id="basicContent02" class="is-active" data-hc-content="content02" aria-hidden="false">
     ...
     Content 02
     ...
 </div>
 
 <!-- can use nested accordion -->
-<button type="button"　data-hc-control="parentContent">
+<button type="button" data-hc-control="parentContent"
+    aria-expanded="true"
+    aria-controls="netstedParantContent">
     Show/Hide parent content
 </button>
-<div data-hc-content="parentContent">
+<div id="netstedParantContent" data-hc-content="parentContent" aria-hidden="true">
     ...
     parent content
     ...
-    <button type="button"　data-hc-control="childContent">
+    <button type="button"　
+        data-hc-control="childContent"
+        aria-expanded="true"
+        aria-controls="netstedChiledContent">
         Show/Hide child content
     </button>
-    <div data-hc-content="childContent">
+    <div id="netstedChiledContent" data-hc-content="childContent" aria-hidden="true">
         ...
         child content
         ...

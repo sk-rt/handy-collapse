@@ -80,11 +80,17 @@
                 <h1 class="title is-1">Basic Accordion</h1>
                 <pre class="code-sample"><code class="prettyprint">new HandyCollapse(); // default options</code></pre>
                 <!-- if add activeClass(def: "is-active"), Opened on init. -->
-                <button type="button" class="button is-primary is-fullwidth is-medium" data-hc-control="content01">
+                <button
+                    type="button"
+                    class="button is-primary is-fullwidth is-medium"
+                    data-hc-control="content01"
+                    aria-expanded="true"
+                    aria-controls="basicContent01"
+                >
                     Content 01
                 </button>
 
-                <div class="is-active" data-hc-content="content01">
+                <div id="basicContent01" class="is-active" data-hc-content="content01" aria-hidden="false">
                     <div class="box">
                         <p>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
@@ -97,11 +103,17 @@
                         </p>
                     </div>
                 </div>
-                <button type="button" class="button is-primary is-fullwidth is-medium" data-hc-control="content02">
+                <button
+                    type="button"
+                    class="button is-primary is-fullwidth is-medium"
+                    data-hc-control="content02"
+                    aria-expanded="false"
+                    aria-controls="basicContent02"
+                >
                     Content 02
                 </button>
 
-                <div data-hc-content="content02">
+                <div id="basicContent02" data-hc-content="content02" aria-hidden="true">
                     <div class="box">
                         <p>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
@@ -114,10 +126,16 @@
                         </p>
                     </div>
                 </div>
-                <button type="button" class="button is-primary is-fullwidth is-medium" data-hc-control="content03">
+                <button
+                    type="button"
+                    class="button is-primary is-fullwidth is-medium"
+                    data-hc-control="content03"
+                    aria-expanded="false"
+                    aria-controls="basicContent03"
+                >
                     Content 03
                 </button>
-                <div data-hc-content="content03">
+                <div id="basicContent03" data-hc-content="content03" aria-hidden="true">
                     <div class="box">
                         <p>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
@@ -137,11 +155,17 @@
     nameSpace: "nested",
     closeOthers: false
 });</code></pre>
-                <button type="button" class="button is-primary is-fullwidth is-medium" data-nested-control="content01">
+                <button
+                    type="button"
+                    class="button is-primary is-fullwidth is-medium"
+                    data-nested-control="content01"
+                    aria-expanded="false"
+                    aria-controls="nestedCotent01"
+                >
                     Content 01
                 </button>
 
-                <div data-nested-content="content01">
+                <div id="nestedCotent01" data-nested-content="content01" aria-hidden="true">
                     <div class="box">
                         <p>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
@@ -156,10 +180,12 @@
                             type="button"
                             class="button is-info is-fullwidth is-medium"
                             data-nested-control="child01"
+                            aria-expanded="false"
+                            aria-controls="nestedChild01"
                         >
                             Child Content 01
                         </button>
-                        <div data-nested-content="child01">
+                        <div id="nestedChild01" data-nested-content="child01" aria-hidden="true">
                             <div class="box" style="background-color:#FFF">
                                 <p>
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
@@ -175,11 +201,17 @@
                     </div>
                 </div>
 
-                <button type="button" class="button is-primary is-fullwidth is-medium" data-nested-control="content02">
+                <button
+                    type="button"
+                    class="button is-primary is-fullwidth is-medium"
+                    data-nested-control="content02"
+                    aria-expanded="false"
+                    aria-controls="nestedCotent02"
+                >
                     Content 02
                 </button>
 
-                <div data-nested-content="content02">
+                <div id="nestedCotent02" data-nested-content="content02" aria-hidden="true">
                     <div class="box">
                         <p>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
@@ -194,10 +226,12 @@
                             type="button"
                             class="button is-info is-fullwidth is-medium"
                             data-nested-control="child02"
+                            aria-expanded="false"
+                            aria-controls="nestedChild02"
                         >
                             Child Content 02
                         </button>
-                        <div data-nested-content="child02">
+                        <div id="nestedChild02" data-nested-content="child02" aria-hidden="true">
                             <div class="box" style="background-color:#FFF">
                                 <p>
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
@@ -212,10 +246,12 @@
                                     type="button"
                                     class="button is-warning is-fullwidth is-medium"
                                     data-nested-control="grandChild02"
+                                    aria-expanded="false"
+                                    aria-controls="nestedGrandChild02"
                                 >
                                     GrandChild Content 02
                                 </button>
-                                <div data-nested-content="grandChild02">
+                                <div id="nestedGrandChild02" data-nested-content="grandChild02" aria-hidden="true">
                                     <div class="box" style="background-color:#FFF">
                                         <p>
                                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -255,10 +291,12 @@
                     type="button"
                     class="button is-primary is-fullwidth is-medium"
                     data-callback-control="content01"
+                    aria-expanded="false"
+                    aria-controls="callbackContent01"
                 >
                     Closed content01
                 </button>
-                <div data-callback-content="content01">
+                <div id="callbackContent01" data-callback-content="content01" aria-hidden="true">
                     <div class="box">
                         <p>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
@@ -276,10 +314,12 @@
                     type="button"
                     class="button is-primary is-fullwidth is-medium"
                     data-callback-control="content02"
+                    aria-expanded="false"
+                    aria-controls="callbackContent02"
                 >
                     Closed content02
                 </button>
-                <div data-callback-content="content02">
+                <div id="callbackContent02" data-callback-content="content02" aria-hidden="true">
                     <div class="box">
                         <p>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
@@ -321,6 +361,8 @@
                             type="button"
                             class="button is-primary is-fullwidth is-medium tab-button is-active"
                             data-tab-control="content01"
+                            aria-expanded="false"
+                            aria-controls="tabContent01"
                         >
                             Tab 01
                         </button>
@@ -330,6 +372,8 @@
                             type="button"
                             class="button is-primary is-fullwidth is-medium tab-button"
                             data-tab-control="content02"
+                            aria-expanded="false"
+                            aria-controls="tabContent02"
                         >
                             Tab 02
                         </button>
@@ -339,12 +383,14 @@
                             type="button"
                             class="button is-primary is-fullwidth is-medium tab-button"
                             data-tab-control="content03"
+                            aria-expanded="false"
+                            aria-controls="tabContent03"
                         >
                             Tab 03
                         </button>
                     </div>
                 </div>
-                <div data-tab-content="content01" class="is-active tab-content">
+                <div id="tabContent01" data-tab-content="content01" class="is-active tab-content" aria-hidden="true">
                     <div class="box">
                         <p>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
@@ -358,7 +404,7 @@
                     </div>
                 </div>
 
-                <div data-tab-content="content02" class="tab-content">
+                <div id="tabContent02" data-tab-content="content02" class="tab-content" aria-hidden="true">
                     <div class="box">
                         <p>
                             laboris nisi ut aliquip ex ea commodo consequat. Duis auteirure<br />
@@ -379,7 +425,7 @@
                         </p>
                     </div>
                 </div>
-                <div data-tab-content="content03" class="tab-content">
+                <div id="tabContent03" data-tab-content="content03" class="tab-content" aria-hidden="true">
                     <div class="box">
                         <p>
                             Excepteur sint occaecatcupidatat<br />
