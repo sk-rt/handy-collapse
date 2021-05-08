@@ -16,13 +16,18 @@ export interface Options {
     onSlideStart: (isOpen: boolean, id: string) => void;
     onSlideEnd: (isOpen: boolean, id: string) => void;
 }
+interface ItemState {
+    [key: string]: {
+        isOpen: boolean;
+        isAnimating: boolean;
+    };
+}
 export default class HandyCollapse {
-    toggleContentEls: NodeListOf<HTMLElement>;
-    toggleButtonEls: NodeListOf<HTMLElement>;
-    private itemsState;
+    toggleContentEls: HTMLElement[];
+    toggleButtonEls: HTMLElement[];
+    itemsState: ItemState;
     options: Options;
     constructor(_options?: Partial<Options>);
-    private init;
     /**
      * init Param & show/hide items
      */
@@ -30,7 +35,7 @@ export default class HandyCollapse {
     /**
      * Add toggleButton Listners
      */
-    handleButtonsEvent(buttonElement: NodeList): void;
+    handleButtonsEvent(buttonElement: HTMLElement[]): void;
     /**
      * Set state
      */
@@ -57,3 +62,4 @@ export default class HandyCollapse {
      */
     getTargetHeight(targetEl: HTMLElement): number | void;
 }
+export {};
