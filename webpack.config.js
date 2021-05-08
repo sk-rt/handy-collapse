@@ -1,13 +1,12 @@
 const base = require("./webpack.config.base");
 const environment = process.env.NODE_ENV || "development";
 const isDevelopment = environment === "development";
-const publicPath = isDevelopment ? "js/" : "";
+const publicPath = isDevelopment ? "/js/" : "/";
 
 /**
  * For Es Module
  */
-const esmOutputPath =
-    process.env.NODE_ENV === "production" ? `${__dirname}/dist/${publicPath}` : `${__dirname}/sample/${publicPath}`;
+const esmOutputPath = process.env.NODE_ENV === "production" ? `${__dirname}/dist` : `${__dirname}/sample`;
 const esm = {
     ...base,
     entry: {
@@ -26,9 +25,7 @@ const esm = {
  * For stand-alone
  */
 const standAloneOutputPath =
-    process.env.NODE_ENV === "production"
-        ? `${__dirname}/dist/standalone/${publicPath}`
-        : `${__dirname}/sample/${publicPath}`;
+    process.env.NODE_ENV === "production" ? `${__dirname}/dist/standalone` : `${__dirname}/sample`;
 const standAlone = {
     ...base,
     entry: {
@@ -42,6 +39,7 @@ const standAlone = {
         filename: "[name].js"
     },
     devServer: {
+        quiet: false,
         contentBase: `${__dirname}/sample/`,
         watchContentBase: true,
         open: true,
@@ -50,5 +48,8 @@ const standAlone = {
         port: 8888
     }
 };
-
-module.exports = [esm, standAlone];
+if (isDevelopment) {
+    module.exports = standAlone;
+} else {
+    module.exports = [esm, standAlone];
+}
