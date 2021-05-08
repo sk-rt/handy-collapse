@@ -37,6 +37,7 @@ new HandyCollapse(options);
 ```
 ### Markup
 
+#### Minimum markup
 ```html
 <!-- 
     Add data attribute, button/content element.
@@ -51,7 +52,7 @@ new HandyCollapse(options);
     Toggle Content
 </div>
 ```
-### width `aria-*` attribute for accessibility
+#### With `aria-*` attribute for accessibility
 ```html
 
 <button type="button" 
