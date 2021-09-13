@@ -1,3 +1,4 @@
+"use strict";
 /**
  * handyCollapse
  * https://github.com/sk-rt/handy-collapse
@@ -15,6 +16,7 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+exports.__esModule = true;
 var HandyCollapse = /** @class */ (function () {
     function HandyCollapse(_options) {
         if (_options === void 0) { _options = {}; }
@@ -127,7 +129,7 @@ var HandyCollapse = /** @class */ (function () {
         //Close Others
         if (this.options.closeOthers) {
             [].slice.call(this.toggleContentEls).forEach(function (contentEl) {
-                if (contentEl.getAttribute('closeOthers') !== 'false') {
+                if (contentEl.getAttribute('closeOthers') === 'false') {
                     var closeId = contentEl.getAttribute(_this.options.toggleContentAttr);
                     if (closeId && closeId !== id)
                         _this.close(closeId, false, isAnimation);
@@ -262,5 +264,4 @@ var HandyCollapse = /** @class */ (function () {
     };
     return HandyCollapse;
 }());
-export default HandyCollapse;
-//# sourceMappingURL=index.js.map
+exports["default"] = HandyCollapse;
