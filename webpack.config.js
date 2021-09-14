@@ -1,6 +1,6 @@
 const base = require("./webpack.config.base");
-const environment = 'production' || "development";
-const isDevelopment = environment === "production";
+const environment = process.env.NODE_ENV || "development";
+const isDevelopment = environment === "development";
 const publicPath = isDevelopment ? "/js/" : "/";
 
 /**
