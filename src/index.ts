@@ -17,17 +17,20 @@ export interface Options {
     onSlideStart: (isOpen: boolean, id: string) => void;
     onSlideEnd: (isOpen: boolean, id: string) => void;
 }
+
 interface ItemState {
     [key: string]: {
         isOpen: boolean;
         isAnimating: boolean;
     };
 }
+
 export default class HandyCollapse {
     toggleContentEls: HTMLElement[];
     toggleButtonEls: HTMLElement[];
     itemsState: ItemState = {};
     options: Options;
+
     constructor(_options: Partial<Options> = {}) {
         const nameSpace = typeof _options === "object" && "nameSpace" in _options ? _options.nameSpace : "hc";
         const defaultOptions = {
@@ -39,8 +42,10 @@ export default class HandyCollapse {
             closeOthers: true,
             animationSpeed: 400,
             cssEasing: "ease-in-out",
-            onSlideStart: () => {},
-            onSlideEnd: () => {}
+            onSlideStart: () => {
+            },
+            onSlideEnd: () => {
+            }
         };
         this.options = {
             ...defaultOptions,
@@ -94,6 +99,7 @@ export default class HandyCollapse {
             }
         });
     }
+
     /**
      * Set state
      */
@@ -113,9 +119,26 @@ export default class HandyCollapse {
         if (this.itemsState[id]?.isOpen === false) {
             this.open(id, isRunCallback, this.options.isAnimation);
         } else {
+
+            // Nested Close others if opened
+            if (this.options.closeOthers) {
+                if (document.querySelector(`[data-nested-close-content='${id}']`)) {
+                    var currentElement = document.querySelector<HTMLElement>(`[data-nested-close-content='${id}']`);
+                    var _this = this;
+                    if (currentElement!.getAttribute('closeOthers') === 'false') {
+                        [].slice.call(_this.toggleContentEls).forEach(function (contentEl: HTMLElement) {
+                            var closeId = contentEl.getAttribute(_this.options.toggleContentAttr);
+                            if (closeId && closeId !== id)
+                                _this.close(closeId, false, _this.options.isAnimation);
+                        });
+                    }
+                }
+            }
+
             this.close(id, isRunCallback, this.options.isAnimation);
         }
     }
+
     /**
      * Open accordion
      * @param  id - accordion ID
@@ -131,13 +154,27 @@ export default class HandyCollapse {
         }
         this.itemsState[id].isAnimating = true;
 
-        //Close Others
+        // Nested Close Others if opened
         if (this.options.closeOthers) {
             [].slice.call(this.toggleContentEls).forEach((contentEl: HTMLElement) => {
-                const closeId = contentEl.getAttribute(this.options.toggleContentAttr);
-                if (closeId && closeId !== id) this.close(closeId, false, isAnimation);
+                if (contentEl.getAttribute('closeOthers') !== 'false') {
+                    const closeId = contentEl.getAttribute(this.options.toggleContentAttr);
+                    if (closeId && closeId !== id) this.close(closeId, false, isAnimation);
+                }
             });
         }
+
+        const currentElement = document.querySelector<HTMLElement>(`[data-nested-close-content='${id}']`);
+        if (currentElement) {
+            if (currentElement!.getAttribute('closeOthers') === 'false') {
+                [].slice.call(this.toggleContentEls).forEach((contentEl: HTMLElement) => {
+                    const closeId = contentEl.getAttribute(this.options.toggleContentAttr);
+                    if (closeId && closeId !== id)
+                        this.close(closeId, false, isAnimation);
+                });
+            }
+        }
+
         if (isRunCallback !== false) this.options.onSlideStart(true, id);
 
         //Content : Set getHeight, add activeClass
@@ -179,6 +216,7 @@ export default class HandyCollapse {
             toggleBody.setAttribute("aria-hidden", "false");
         }
     }
+
     /**
      * Close accordion
      * @param id - accordion ID
@@ -234,6 +272,7 @@ export default class HandyCollapse {
             toggleBody.setAttribute("aria-hidden", "true");
         }
     }
+
     /**
      * Get Elemet Height
      * @param targetEl - target Element
