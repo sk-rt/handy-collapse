@@ -1,6 +1,14 @@
 # handy-collaps.js
 
-Fixed nested closeOthers to prevent close parent and now can use closeOthers option with nested namespace. Our Edition:
+With default version we can't use closeOthers with mean, after click to open other child's, we can't use it to close other child's or
+even close another parent on click other parent.
+
+Fixed nested closeOthers to prevent close parent and now can use closeOthers option with nested namespace.
+
+Our Edition - Added Nested closeOthers:
+
+Added: `nameSpace: "nested-close"` & `data-nested-close`
+
 If you want to not close parent accordion from closeOthers and exclude them, you can add an attribute to your parent
 group like: `closeOthers ="false"` .
 

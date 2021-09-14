@@ -119,6 +119,22 @@ export default class HandyCollapse {
         if (this.itemsState[id]?.isOpen === false) {
             this.open(id, isRunCallback, this.options.isAnimation);
         } else {
+
+            // Nested Close others if opened
+            if (this.options.closeOthers) {
+                if (document.querySelector(`[data-nested-close-content='${id}']`)) {
+                    var currentElement = document.querySelector<HTMLElement>(`[data-nested-close-content='${id}']`);
+                    var _this = this;
+                    if (currentElement!.getAttribute('closeOthers') === 'false') {
+                        [].slice.call(_this.toggleContentEls).forEach(function (contentEl: HTMLElement) {
+                            var closeId = contentEl.getAttribute(_this.options.toggleContentAttr);
+                            if (closeId && closeId !== id)
+                                _this.close(closeId, false, _this.options.isAnimation);
+                        });
+                    }
+                }
+            }
+
             this.close(id, isRunCallback, this.options.isAnimation);
         }
     }
@@ -138,7 +154,7 @@ export default class HandyCollapse {
         }
         this.itemsState[id].isAnimating = true;
 
-        //Close Others
+        // Nested Close Others if opened
         if (this.options.closeOthers) {
             [].slice.call(this.toggleContentEls).forEach((contentEl: HTMLElement) => {
                 if (contentEl.getAttribute('closeOthers') !== 'false') {
@@ -147,6 +163,18 @@ export default class HandyCollapse {
                 }
             });
         }
+
+        const currentElement = document.querySelector<HTMLElement>(`[data-nested-close-content='${id}']`);
+        if (currentElement) {
+            if (currentElement!.getAttribute('closeOthers') === 'false') {
+                [].slice.call(this.toggleContentEls).forEach((contentEl: HTMLElement) => {
+                    const closeId = contentEl.getAttribute(this.options.toggleContentAttr);
+                    if (closeId && closeId !== id)
+                        this.close(closeId, false, isAnimation);
+                });
+            }
+        }
+
         if (isRunCallback !== false) this.options.onSlideStart(true, id);
 
         //Content : Set getHeight, add activeClass

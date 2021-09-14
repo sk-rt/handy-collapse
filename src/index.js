@@ -16,7 +16,6 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-exports.__esModule = true;
 var HandyCollapse = /** @class */ (function () {
     function HandyCollapse(_options) {
         if (_options === void 0) { _options = {}; }
@@ -50,21 +49,21 @@ var HandyCollapse = /** @class */ (function () {
      * init Param & show/hide items
      */
     HandyCollapse.prototype.initContentsState = function (contentEls) {
-        var _this = this;
+        var _this_1 = this;
         this.itemsState = {};
         contentEls.forEach(function (contentEl) {
             contentEl.style.overflow = "hidden";
             contentEl.style.maxHeight = "none";
-            var isOpen = contentEl.classList.contains(_this.options.activeClass);
-            var id = contentEl.getAttribute(_this.options.toggleContentAttr);
+            var isOpen = contentEl.classList.contains(_this_1.options.activeClass);
+            var id = contentEl.getAttribute(_this_1.options.toggleContentAttr);
             if (!id)
                 return;
-            _this.setItemState(id, isOpen);
+            _this_1.setItemState(id, isOpen);
             if (!isOpen) {
-                _this.close(id, false, false);
+                _this_1.close(id, false, false);
             }
             else {
-                _this.open(id, false, false);
+                _this_1.open(id, false, false);
             }
         });
     };
@@ -72,13 +71,13 @@ var HandyCollapse = /** @class */ (function () {
      * Add toggleButton Listners
      */
     HandyCollapse.prototype.handleButtonsEvent = function (buttonElement) {
-        var _this = this;
+        var _this_1 = this;
         buttonElement.forEach(function (buttonEl) {
-            var id = buttonEl.getAttribute(_this.options.toggleButtonAttr);
+            var id = buttonEl.getAttribute(_this_1.options.toggleButtonAttr);
             if (id) {
                 buttonEl.addEventListener("click", function (e) {
                     e.preventDefault();
-                    _this.toggleSlide(id, true);
+                    _this_1.toggleSlide(id, true);
                 }, false);
             }
         });
@@ -105,6 +104,20 @@ var HandyCollapse = /** @class */ (function () {
             this.open(id, isRunCallback, this.options.isAnimation);
         }
         else {
+            // Nested Close others if opened
+            if (this.options.closeOthers) {
+                if (document.querySelector("[data-nested-close-content='" + id + "']")) {
+                    var currentElement = document.querySelector("[data-nested-close-content='" + id + "']");
+                    var _this = this;
+                    if (currentElement.getAttribute('closeOthers') === 'false') {
+                        [].slice.call(_this.toggleContentEls).forEach(function (contentEl) {
+                            var closeId = contentEl.getAttribute(_this.options.toggleContentAttr);
+                            if (closeId && closeId !== id)
+                                _this.close(closeId, false, false);
+                        });
+                    }
+                }
+            }
             this.close(id, isRunCallback, this.options.isAnimation);
         }
     };
@@ -113,7 +126,7 @@ var HandyCollapse = /** @class */ (function () {
      * @param  id - accordion ID
      */
     HandyCollapse.prototype.open = function (id, isRunCallback, isAnimation) {
-        var _this = this;
+        var _this_1 = this;
         if (isRunCallback === void 0) { isRunCallback = true; }
         if (isAnimation === void 0) { isAnimation = true; }
         if (!id)
@@ -126,15 +139,25 @@ var HandyCollapse = /** @class */ (function () {
             return;
         }
         this.itemsState[id].isAnimating = true;
-        //Close Others
+        // Nested Close Others if opened
         if (this.options.closeOthers) {
             [].slice.call(this.toggleContentEls).forEach(function (contentEl) {
-                if (contentEl.getAttribute('closeOthers') === 'false') {
-                    var closeId = contentEl.getAttribute(_this.options.toggleContentAttr);
+                if (contentEl.getAttribute('closeOthers') !== 'false') {
+                    var closeId = contentEl.getAttribute(_this_1.options.toggleContentAttr);
                     if (closeId && closeId !== id)
-                        _this.close(closeId, false, isAnimation);
+                        _this_1.close(closeId, false, isAnimation);
                 }
             });
+        }
+        var currentElement = document.querySelector("[data-nested-close-content='" + id + "']");
+        if (currentElement) {
+            if (currentElement.getAttribute('closeOthers') === 'false') {
+                [].slice.call(this.toggleContentEls).forEach(function (contentEl) {
+                    var closeId = contentEl.getAttribute(_this_1.options.toggleContentAttr);
+                    if (closeId && closeId !== id)
+                        _this_1.close(closeId, false, isAnimation);
+                });
+            }
         }
         if (isRunCallback !== false)
             this.options.onSlideStart(true, id);
@@ -146,7 +169,7 @@ var HandyCollapse = /** @class */ (function () {
         var toggleButton = document.querySelectorAll("[" + this.options.toggleButtonAttr + "='" + id + "']");
         if (toggleButton.length > 0) {
             [].slice.call(toggleButton).forEach(function (button) {
-                button.classList.add(_this.options.activeClass);
+                button.classList.add(_this_1.options.activeClass);
                 if (button.hasAttribute("aria-expanded")) {
                     button.setAttribute("aria-expanded", "true");
                 }
@@ -159,11 +182,11 @@ var HandyCollapse = /** @class */ (function () {
             toggleBody.style.maxHeight = (clientHeight || "1000") + "px";
             setTimeout(function () {
                 if (isRunCallback !== false)
-                    _this.options.onSlideEnd(true, id);
+                    _this_1.options.onSlideEnd(true, id);
                 toggleBody.style.maxHeight = "none";
                 toggleBody.style.transition = "";
                 toggleBody.style.overflow = "";
-                _this.itemsState[id].isAnimating = false;
+                _this_1.itemsState[id].isAnimating = false;
             }, this.options.animationSpeed);
         }
         else {
@@ -182,7 +205,7 @@ var HandyCollapse = /** @class */ (function () {
      * @param id - accordion ID
      */
     HandyCollapse.prototype.close = function (id, isRunCallback, isAnimation) {
-        var _this = this;
+        var _this_1 = this;
         if (isRunCallback === void 0) { isRunCallback = true; }
         if (isAnimation === void 0) { isAnimation = true; }
         if (!id)
@@ -205,7 +228,7 @@ var HandyCollapse = /** @class */ (function () {
         var toggleButton = document.querySelectorAll("[" + this.options.toggleButtonAttr + "='" + id + "']");
         if (toggleButton.length > 0) {
             [].slice.call(toggleButton).forEach(function (button) {
-                button.classList.remove(_this.options.activeClass);
+                button.classList.remove(_this_1.options.activeClass);
                 if (button.hasAttribute("aria-expanded")) {
                     button.setAttribute("aria-expanded", "false");
                 }
@@ -216,9 +239,9 @@ var HandyCollapse = /** @class */ (function () {
             toggleBody.style.transition = this.options.animationSpeed + "ms " + this.options.cssEasing;
             setTimeout(function () {
                 if (isRunCallback !== false)
-                    _this.options.onSlideEnd(false, id);
+                    _this_1.options.onSlideEnd(false, id);
                 toggleBody.style.transition = "";
-                _this.itemsState[id].isAnimating = false;
+                _this_1.itemsState[id].isAnimating = false;
                 toggleBody.style.visibility = "hidden";
             }, this.options.animationSpeed);
         }
