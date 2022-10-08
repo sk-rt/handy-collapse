@@ -85,7 +85,7 @@ export default class HandyCollapse {
             if (id) {
                 buttonEl.addEventListener(
                     "click",
-                    e => {
+                    (e) => {
                         e.preventDefault();
                         this.toggleSlide(id, true);
                     },
@@ -248,7 +248,7 @@ export default class HandyCollapse {
         const inputElements: HTMLInputElement[] = [].slice.call(cloneEl.querySelectorAll("input[name]"));
         if (inputElements.length !== 0) {
             const suffix = "-" + new Date().getTime();
-            inputElements.forEach(input => {
+            inputElements.forEach((input) => {
                 input.name += suffix;
             });
         }

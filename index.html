@@ -34,8 +34,9 @@
                 transform: translateY(0px);
             }
         </style>
-        <script src="./js/handy-collapse.js"></script>
-        <script>
+        <script type="module" src="/src/index.ts"></script>
+        <script type="module">
+            import HandyCollapse from "/src/index";
             document.addEventListener(
                 "DOMContentLoaded",
                 () => {
@@ -186,7 +187,7 @@
                             Child Content 01
                         </button>
                         <div id="nestedChild01" data-nested-content="child01" aria-hidden="true">
-                            <div class="box" style="background-color:#FFF">
+                            <div class="box" style="background-color: #fff">
                                 <p>
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
                                     incididunt ut labore et dolore magna aliqua.<br />
@@ -232,7 +233,7 @@
                             Child Content 02
                         </button>
                         <div id="nestedChild02" data-nested-content="child02" aria-hidden="true">
-                            <div class="box" style="background-color:#FFF">
+                            <div class="box" style="background-color: #fff">
                                 <p>
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
                                     incididunt ut labore et dolore magna aliqua.<br />
@@ -252,7 +253,7 @@
                                     GrandChild Content 02
                                 </button>
                                 <div id="nestedGrandChild02" data-nested-content="grandChild02" aria-hidden="true">
-                                    <div class="box" style="background-color:#FFF">
+                                    <div class="box" style="background-color: #fff">
                                         <p>
                                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
                                             tempor incididunt ut labore et dolore magna aliqua.<br />
