@@ -1,0 +1,6 @@
+.history
+.husky
+.vscode
+sample
+dist
+node_modules

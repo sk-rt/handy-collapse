@@ -32,6 +32,8 @@
     "build": "vite build && dts-bundle-generator --config ./dts-bundle-generator.config.ts",
     "build:sample": "vite build --config vite.config.sample.ts",
     "prepare": "yarn build",
+    "lint": "eslint . --ext .ts",
+    "format": "prettier . --write",
     "publish": "npm publish"
   },
   "devDependencies": {
