@@ -4,6 +4,7 @@
   "description": "A pure Javascript module for accordion/collapse UI without JQuery",
   "main": "./dist/handy-collapse.cjs",
   "module": "./dist/handy-collapse.mjs",
+  "types": "./dist/handy-collapse.d.ts",
   "exports": {
     ".": {
       "require": "./dist/handy-collapse.cjs",
