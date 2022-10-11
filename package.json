@@ -34,8 +34,7 @@
     "build:sample": "vite build --config vite.config.sample.ts",
     "prepare": "yarn build",
     "lint": "eslint . --ext .ts",
-    "format": "prettier . --write",
-    "publish": "npm publish"
+    "format": "prettier . --write"
   },
   "devDependencies": {
     "@types/node": "^18.8.3",
