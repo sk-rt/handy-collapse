@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Handy Collapse</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css" />
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=desert"></script>
+
+    <style>
+      .container {
+        max-width: 800px;
+      }
+      .box {
+        background: #f2f2f2;
+        box-shadow: none;
+      }
+      .code-sample {
+        background-color: #333;
+        margin-bottom: 2em;
+        border-radius: 4px;
+      }
+      .tab-button.is-active {
+        pointer-events: none;
+      }
+      .tab-content .box {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: 0.5s;
+      }
+      .tab-content.is-active .box {
+        opacity: 1;
+        transform: translateY(0px);
+      }
+    </style>
+    <script type="module" src="/src/index.ts"></script>
+    <script type="module">
+      import HandyCollapse from "/src/index";
+      document.addEventListener(
+        "DOMContentLoaded",
+        () => {
+          //Basic Accordion
+          const basic = new HandyCollapse();
+          //Nested
+          const nested = new HandyCollapse({
+            nameSpace: "nested",
+            closeOthers: false
+          });
+          //Callback
+          const callback = new HandyCollapse({
+            nameSpace: "callback",
+            closeOthers: false,
+            onSlideStart: (isOpen, contentID) => {
+              console.log(isOpen);
+              const buttonEl = document.querySelector(`[data-callback-control='${contentID}']`);
+              if (!buttonEl) return;
+              if (isOpen) {
+                buttonEl.textContent = "Opened " + contentID;
+              } else {
+                buttonEl.textContent = "Closed " + contentID;
+              }
+            }
+          });
+          //Callback
+          const tab = new HandyCollapse({
+            nameSpace: "tab",
+            closeOthers: true,
+            isAnimation: false
+          });
+        },
+        false
+      );
+    </script>
+  </head>
+
+  <body>
+    <div class="container">
+      <!-- Basic -->
+      <section class="section">
+        <h1 class="title is-1">Basic Accordion</h1>
+        <pre class="code-sample"><code class="prettyprint">new HandyCollapse(); // default options</code></pre>
+        <!-- if add activeClass(def: "is-active"), Opened on init. -->
+        <button
+          type="button"
+          class="button is-primary is-fullwidth is-medium"
+          data-hc-control="content01"
+          aria-expanded="true"
+          aria-controls="basicContent01"
+        >
+          Content 01
+        </button>
+
+        <div id="basicContent01" class="is-active" data-hc-content="content01" aria-hidden="false">
+          <div class="box">
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+              dolore magna aliqua.<br />
+              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+              consequat. Duis aute<br />
+              irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+              sint occaecat<br />
+              cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+          </div>
+        </div>
+        <button
+          type="button"
+          class="button is-primary is-fullwidth is-medium"
+          data-hc-control="content02"
+          aria-expanded="false"
+          aria-controls="basicContent02"
+        >
+          Content 02
+        </button>
+
+        <div id="basicContent02" data-hc-content="content02" aria-hidden="true">
+          <div class="box">
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+              dolore magna aliqua.<br />
+              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+              consequat. Duis aute<br />
+              irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+              sint occaecat<br />
+              cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+          </div>
+        </div>
+        <button
+          type="button"
+          class="button is-primary is-fullwidth is-medium"
+          data-hc-control="content03"
+          aria-expanded="false"
+          aria-controls="basicContent03"
+        >
+          Content 03
+        </button>
+        <div id="basicContent03" data-hc-content="content03" aria-hidden="true">
+          <div class="box">
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+              dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+              ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+              fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+              mollit anim id est laborum.
+            </p>
+          </div>
+        </div>
+      </section>
+      <hr />
+      <!-- Nested -->
+      <section class="section">
+        <h1 class="title is-1">Nested Accordion</h1>
+        <pre class="code-sample"><code class="prettyprint">const nested = new HandyCollapse({
+    nameSpace: "nested",
+    closeOthers: false
+});</code></pre>
+        <button
+          type="button"
+          class="button is-primary is-fullwidth is-medium"
+          data-nested-control="content01"
+          aria-expanded="false"
+          aria-controls="nestedCotent01"
+        >
+          Content 01
+        </button>
+
+        <div id="nestedCotent01" data-nested-content="content01" aria-hidden="true">
+          <div class="box">
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+              dolore magna aliqua.<br />
+              Utenim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+              Duis auteirure<br />
+              dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+              occaecatcupidatat<br />
+              non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br /><br />
+            </p>
+            <button
+              type="button"
+              class="button is-info is-fullwidth is-medium"
+              data-nested-control="child01"
+              aria-expanded="false"
+              aria-controls="nestedChild01"
+            >
+              Child Content 01
+            </button>
+            <div id="nestedChild01" data-nested-content="child01" aria-hidden="true">
+              <div class="box" style="background-color: #fff">
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                  dolore magna aliqua.<br />
+                  Utenim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                  consequat. Duis auteirure<br />
+                  dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+                  occaecatcupidatat<br />
+                  non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          class="button is-primary is-fullwidth is-medium"
+          data-nested-control="content02"
+          aria-expanded="false"
+          aria-controls="nestedCotent02"
+        >
+          Content 02
+        </button>
+
+        <div id="nestedCotent02" data-nested-content="content02" aria-hidden="true">
+          <div class="box">
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+              dolore magna aliqua.<br />
+              Utenim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+              Duis auteirure<br />
+              dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+              occaecatcupidatat<br />
+              non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br /><br />
+            </p>
+            <button
+              type="button"
+              class="button is-info is-fullwidth is-medium"
+              data-nested-control="child02"
+              aria-expanded="false"
+              aria-controls="nestedChild02"
+            >
+              Child Content 02
+            </button>
+            <div id="nestedChild02" data-nested-content="child02" aria-hidden="true">
+              <div class="box" style="background-color: #fff">
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                  dolore magna aliqua.<br />
+                  Utenim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                  consequat. Duis auteirure<br />
+                  dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+                  occaecatcupidatat<br />
+                  non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br /><br />
+                </p>
+                <button
+                  type="button"
+                  class="button is-warning is-fullwidth is-medium"
+                  data-nested-control="grandChild02"
+                  aria-expanded="false"
+                  aria-controls="nestedGrandChild02"
+                >
+                  GrandChild Content 02
+                </button>
+                <div id="nestedGrandChild02" data-nested-content="grandChild02" aria-hidden="true">
+                  <div class="box" style="background-color: #fff">
+                    <p>
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                      labore et dolore magna aliqua.<br />
+                      Utenim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                      consequat. Duis auteirure<br />
+                      dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+                      sint occaecatcupidatat<br />
+                      non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <hr />
+      <!-- Callback -->
+      <section class="section">
+        <h1 class="title is-1">Callback</h1>
+        <pre class="code-sample"><code class="prettyprint lang-js"> const callback = new HandyCollapse({
+    nameSpace: "callback",
+    closeOthers: false,
+    onSlideStart: (isOpen, contentID) => {
+        console.log(isOpen);
+        let buttonEl = document.querySelector(`[data-callback-control='${contentID}']`);
+        if (!buttonEl) return;
+        if (isOpen) {
+            buttonEl.textContent = "Opened " + contentID;
+        } else {
+            buttonEl.textContent = "Closed " + contentID;
+        }
+    }
+});</code></pre>
+        <button
+          type="button"
+          class="button is-primary is-fullwidth is-medium"
+          data-callback-control="content01"
+          aria-expanded="false"
+          aria-controls="callbackContent01"
+        >
+          Closed content01
+        </button>
+        <div id="callbackContent01" data-callback-content="content01" aria-hidden="true">
+          <div class="box">
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+              dolore magna aliqua.<br />
+              Utenim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+              Duis auteirure<br />
+              dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+              occaecatcupidatat<br />
+              non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          class="button is-primary is-fullwidth is-medium"
+          data-callback-control="content02"
+          aria-expanded="false"
+          aria-controls="callbackContent02"
+        >
+          Closed content02
+        </button>
+        <div id="callbackContent02" data-callback-content="content02" aria-hidden="true">
+          <div class="box">
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+              dolore magna aliqua.<br />
+              Utenim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+              Duis auteirure<br />
+              dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+              occaecatcupidatat<br />
+              non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+          </div>
+        </div>
+      </section>
+      <hr />
+      <!-- Tab -->
+      <section class="section">
+        <h1 class="title is-1">Tab</h1>
+        <pre class="code-sample"><code class="prettyprint lang-js">const tab = new HandyCollapse({
+    nameSpace: "tab",
+    closeOthers: true,
+    isAnimation: false
+});</code></pre>
+        <pre class="code-sample"><code class="prettyprint lang-css"> .tab-button.is-active {
+    pointer-events: none;
+}
+.tab-content .box {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: .5s;
+}
+.tab-content.is-active .box {
+    opacity: 1;
+    transform: translateY(0px);
+}</code></pre>
+
+        <div class="columns">
+          <div class="column">
+            <button
+              type="button"
+              class="button is-primary is-fullwidth is-medium tab-button is-active"
+              data-tab-control="content01"
+              aria-expanded="false"
+              aria-controls="tabContent01"
+            >
+              Tab 01
+            </button>
+          </div>
+          <div class="column">
+            <button
+              type="button"
+              class="button is-primary is-fullwidth is-medium tab-button"
+              data-tab-control="content02"
+              aria-expanded="false"
+              aria-controls="tabContent02"
+            >
+              Tab 02
+            </button>
+          </div>
+          <div class="column">
+            <button
+              type="button"
+              class="button is-primary is-fullwidth is-medium tab-button"
+              data-tab-control="content03"
+              aria-expanded="false"
+              aria-controls="tabContent03"
+            >
+              Tab 03
+            </button>
+          </div>
+        </div>
+        <div id="tabContent01" data-tab-content="content01" class="is-active tab-content" aria-hidden="true">
+          <div class="box">
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+              dolore magna aliqua.<br />
+              Utenim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+              Duis auteirure<br />
+              dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+              occaecatcupidatat<br />
+              non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+          </div>
+        </div>
+
+        <div id="tabContent02" data-tab-content="content02" class="tab-content" aria-hidden="true">
+          <div class="box">
+            <p>
+              laboris nisi ut aliquip ex ea commodo consequat. Duis auteirure<br />
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+              dolore magna aliqua.<br />
+              Utenim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+              Duis auteirure<br />
+              dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+              occaecatcupidatat<br />
+              non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet,
+              consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br />
+              Utenim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+              Duis auteirure<br />
+              dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+              occaecatcupidatat<br />
+              non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+          </div>
+        </div>
+        <div id="tabContent03" data-tab-content="content03" class="tab-content" aria-hidden="true">
+          <div class="box">
+            <p>
+              Excepteur sint occaecatcupidatat<br />
+              non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet,
+              consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br />
+              Utenim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+              Duis auteirure<br />
+              dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+              occaecatcupidatat<br />
+              non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
+    <footer class="footer">
+      <div class="content has-text-centered">
+        <p>
+          This Page is example for<br />
+          <a href="https://github.com/sk-rt/handy-collapse"> <strong>handy-collapse.js</strong></a>
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
