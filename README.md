@@ -1,6 +1,6 @@
 # handy-collaps.js
 
-A pure Javascript module for accordion/collapse UI without JQuery.  
+A pure Javascript module for accordion/collapse UI without jQuery.  
 [> examples](https://handy-collapse.netlify.com/)
 
 [![NPM](https://nodei.co/npm/handy-collapse.png?compact=true)](https://nodei.co/npm/handy-collapse/)
@@ -12,11 +12,14 @@ A pure Javascript module for accordion/collapse UI without JQuery.
 
 ### Install
 
-Using npm, install handy-collapse  
+Using npm or yarn, install handy-collapse  
 [> npm](https://www.npmjs.com/package/handy-collapse)
 
-```bash
-$ npm install handy-collapse --save
+```sh
+npm install handy-collapse
+```
+```sh
+yarn add handy-collapse
 ```
 
 ### Import
@@ -25,11 +28,6 @@ $ npm install handy-collapse --save
 import HandyCollapse from "handy-collapse";
 ```
 
-or html
-
-```html
-<script src="path/to/handy-collapse.js"></script>
-```
 
 ### Initialize
 
