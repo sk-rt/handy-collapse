@@ -1,95 +1,121 @@
 # handy-collaps.js
 
 A pure Javascript module for accordion/collapse UI without jQuery.  
-[> examples](https://handy-collapse.netlify.com/)
+[🔗 Demo](https://handy-collapse.netlify.com/)
 
 [![NPM](https://nodei.co/npm/handy-collapse.png?compact=true)](https://nodei.co/npm/handy-collapse/)
 
 [![npm version](https://badge.fury.io/js/handy-collapse.svg)](https://badge.fury.io/js/handy-collapse)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/339e9248-8aae-456a-8a3b-345a01138f98/deploy-status)](https://app.netlify.com/sites/handy-collapse/deploys)
 
-## Usage
 
-### Install
+## Install
 
-Using npm or yarn, install handy-collapse  
-[> npm](https://www.npmjs.com/package/handy-collapse)
+## Use from NPM registry
+
+Using npm or yarn, install handy-collapse.  
+[🔗 NPM](https://www.npmjs.com/package/handy-collapse)
 
 ```sh
+# npm
 npm install handy-collapse
-```
-```sh
+
+# yarn
 yarn add handy-collapse
 ```
 
-### Import
+Then import and init it.
 
 ```javascript
 import HandyCollapse from "handy-collapse";
+
+new HandyCollapse({ 
+    //... 
+});
 ```
 
+## Use from CDN
 
-### Initialize
+[🔗 UNPKG](https://unpkg.com/browse/handy-collapse/)
+
+```html
+<script src="https://unpkg.com/browse/handy-collapse/dist/handy-collapse.iife.js" defer>
+```
+
+Then init.
 
 ```javascript
-new HandyCollapse(options);
+new HandyCollapse({ 
+    //... 
+});
 ```
 
-### Markup
+## Usage
+### 1.Markup
 
-#### Minimum markup
+With minimum markup
 
 ```html
 <!-- 
     Add data attribute, button/content element.
     Control Button:  data-{namespase}-control="{ID}" * multiple elements
-    Toggle Content:  data-{namespase}-content="{ID}" * only one element
+    Collapsible element:  data-{namespase}-content="{ID}" * only one element
  -->
-<button type="button" data-hc-control="uniqID">Show/Hide Content</button>
+<button type="button" data-hc-control="uniqContentID">Show/Hide Content</button>
 
-<div data-hc-content="uniqID">Toggle Content</div>
+<div data-hc-content="uniqContentID">Toggle Content</div>
 ```
 
-#### With `aria-*` attribute for accessibility
+With `aria-*` attribute for accessibility
 
 ```html
-<button type="button" data-hc-control="uniqID" aria-expanded="false" aria-controls="contentID">
+<button type="button" data-hc-control="uniqContentID" aria-expanded="false" aria-controls="theID">
   Show/Hide Content
 </button>
 
-<div id="contentID" data-hc-content="uniqID" aria-hidden="true">Toggle Content</div>
+<div id="theID" data-hc-content="uniqContentID" aria-hidden="true">Toggle Content</div>
 ```
+### 2.Initialize
 
+```js
+ const myAccrodion = new HandyCollapse();
+```
 ## Options
 
 | Option Name       | Type                                     | Default           | Desc                                                                                                                     |
 | ----------------- | ---------------------------------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| nameSpace         | string                                   | "hc"              | Set namespace both "toggleButtonAttr" & "toggleContentAttr"                                                              |
-| toggleButtonAttr  | string                                   | "data-hc-control" | data attribute for Button Element                                                                                        |
-| toggleContentAttr | string                                   | "data-hc-content" | data attribute for Content Element                                                                                       |
-| activeClass       | string                                   | "is-active"       | Add class on opened Element                                                                                              |
-| isAnimation       | boolean                                  | true              | animation Slide                                                                                                          |
-| closeOthers       | boolean                                  | true              | Close others Content                                                                                                     |
-| animationSpeed    | number                                   | 400               | css transition duration(ms)                                                                                              |
-| cssEasing         | string                                   | "ease-in-out"     | css transition easing (only isAnimation:true)                                                                            |
-| onSlideStart      | (isOpen:boolean,contentID:string)=> void | () => void        | Callback on Open/Close Animation Start <br> @param {Boolean} isOpen <br> @param {String} contentID \* Don't ID Attribute |
-| onSlideEnd        | (isOpen:boolean,contentID:string)=> void | () => void        | Callback on Open/Close Animation End <br> @param {Boolean} isOpen <br> @param {String} contentID \* Don't ID Attribute   |
+| __nameSpace__         | `string`                                   | `"hc"`              | Set namespace both `toggleButtonAttr` & `toggleContentAttr`                                                              |
+| __toggleButtonAttr__  | `string`                                   | `` `data-${nameSpace}-control` `` | Attribute name for Controller button element                                                                                        |
+| __toggleContentAttr__ | `string`                                   | `` `data-${nameSpace}-content` `` | Attribute name for Content element                                                                                       |
+| __activeClass__       | `string`                                   | `"is-active"`       | A class on opened element                                                                                              |
+| __isAnimation__       | `boolean`                                  | `true`              | With animation Slide                                                                                                          |
+| __closeOthers__       | `boolean`                                  | `true`              | Close others Content                                                                                                     |
+| __animationSpeed__    | `number`                                   | `400`               | CSS transition duration (ms) *only `isAnimation:true`                                                                                               |
+| __cssEasing__         | `string`                                   | `"ease-in-out"`     | CSS transition easing *only `isAnimation:true`                                                                            |
+| __onSlideStart__      | `(isOpen: boolean, contentId: string) => void` | `() => void`        | Callback on Open/Close Animation Start <br> @param isOpen <br> @param {String} contentId \* Don't ID Attribute |
+| __onSlideEnd__        | `(isOpen: boolean, contentId: string) => void` | `() => void`        | Callback on Open/Close Animation End <br> @param isOpen <br> @param contentId \* Don't ID Attribute   |
 
 ## Methods
 
-Open/Close Content
+|Method name|type|desc|
+|--|--|--|
+|__open(contentId, runCallback, isAnimation)__| `(contentId: string, runCallback: boolean = true, isAnimation: boolean = true) => void`|Open the content|
+|__close(contentId, runCallback, isAnimation)__| `(contentId: string, runCallback: boolean = true, isAnimation: boolean = true) => void`|Close the content|
+
 
 ```javascript
-handyCollapse.open(contentID, [isRunCallback, isAnimation]);
+const myAccrodion = new HandyCollapse();
+
+ // Open the content with `data-${namespace}-content="contentId"` attribute.
+myAccrodion.open("contentId");
+
+// Do not hook callbacks, and no animtion.
+myAccrodion.open("contentId", false, false);
 ```
 
-```javascript
-handyCollapse.close(contentID, [isRunCallback, isAnimation]);
-```
+## Examples
 
-## Sample
-
-[examples](https://handy-collapse.netlify.com/)
+[🔗 Demo](https://handy-collapse.netlify.com/)
 
 ### JS
 
@@ -150,7 +176,8 @@ myAccrodion.close("content01");
 </button>
 <div id="basicContent02" class="is-active" data-hc-content="content02" aria-hidden="false">... Content 02 ...</div>
 
-<!-- can use nested accordion -->
+<!-- Can use nested accordion -->
+<!-- Note: the `closeOthers` parameter must be set to `false` -->
 <button type="button" data-hc-control="parentContent" aria-expanded="true" aria-controls="netstedParantContent">
   Show/Hide parent content
 </button>
