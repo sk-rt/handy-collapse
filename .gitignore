@@ -17,5 +17,5 @@ yarn-error.log*
 *.sw*
 
 dev
-sample/*
+sample
 !index.html
